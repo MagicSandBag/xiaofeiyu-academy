@@ -1,6 +1,6 @@
 # 🐟 小肥鱼学习平台
 
-一只住在 DeepSeek Harness 里的蓝色大肥鱼，把“学习”做成了海底糖果补习社。当前版本 **v1.2**。
+一只住在 DeepSeek Harness 里的蓝色大肥鱼，把“学习”做成了海底糖果补习社。当前版本 **v1.2.1**。
 
 装好插件后，有两个入口：左侧边栏会多出一行“小肥鱼学堂”，点开就是完整学习舱；页面右下角还留着一只探头的小肥鱼，随时可以弹出全屏版。
 
@@ -93,9 +93,11 @@ xiaofeiyu-academy/
 
 小肥鱼是 DSH 插件 bundle，不是一个独立网站。已经打好可直接分发的安装包：
 
-- `release/xiaofeiyu-academy-1.2.0.tgz`（约 8 MB，含预览图、PDF.js 与安装说明）
-- `release/xiaofeiyu-academy-v1.2.0-installer.zip`（GitHub Release 用 ASCII 文件名）
-- `release/小肥鱼学习平台-v1.2.0-安装包.zip`（中文名安装包，内容相同）
+- GitHub 仓库：https://github.com/MagicSandBag/xiaofeiyu-academy
+- 最新 Release：https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest
+- `release/xiaofeiyu-academy-1.2.1.tgz`（约 8 MB，含预览图、PDF.js 与安装说明）
+- `release/xiaofeiyu-academy-v1.2.1-installer.zip`（GitHub Release 用 ASCII 文件名）
+- `release/小肥鱼学习平台-v1.2.1-安装包.zip`（中文名安装包，内容相同）
 - `release/update.json`（更新清单模板；发布前把 `example.com` 换成真实地址）
 - [完整安装说明](安装说明.md)
 - [更新与发布管理](docs/更新与发布.md)
@@ -105,19 +107,19 @@ xiaofeiyu-academy/
 
 1. 安装/更新 DeepSeek Harness 桌面版。
 2. 打开左侧 **插件**。
-3. 选择 **安装 bundle / 从本地安装**，选 `xiaofeiyu-academy-1.2.0.tgz`。
+3. 选择 **安装 bundle / 从本地安装**，选 `xiaofeiyu-academy-1.2.1.tgz`。
 4. 启用 `xiaofeiyu-academy`，重启或刷新页面。
 5. 左侧出现「小肥鱼学堂」，右下角出现小肥鱼头像。
 
 如果插件管理器只有输入框，可填：
 
 ```text
-file:C:/Users/你的用户名/Downloads/xiaofeiyu-academy-1.2.0.tgz
+file:C:/Users/你的用户名/Downloads/xiaofeiyu-academy-1.2.1.tgz
 ```
 
 **不建议**直接把源码文件夹或 `node_modules` 发给别人；用 `.tgz` 最稳。要让更多人安装，可以把 tgz/zip 上传到 GitHub Release；如果发布到 npm，把 `package.json` 的 `private` 改为 `false`，再 `npm publish --access public`，别人就能按包名安装。
 
-**后续更新**：本地 tgz 安装不会自动同步，需要重新发新包；长期多人使用建议走 npm/私有 registry，并由 DSH 插件管理器更新。GitHub Release 路线可配合 `release/update.json` 和设置页“检查更新”（当前先提供清单模板，检查更新 UI 属于下一阶段）。完整管理流程见 [更新与发布管理](docs/更新与发布.md) 和 [CHANGELOG](CHANGELOG.md)。
+**后续更新**：v1.2.1 起，设置页 → 关于小肥鱼 → **检查更新** 会读取 GitHub 最新 Release，显示新版本、更新内容和下载按钮。下载后在 DSH 插件管理器里覆盖安装，学习数据会保留。本地 tgz 安装不会静默自动更新，仍需要用户确认安装；长期多人使用建议走 npm/私有 registry。完整流程见 [更新与发布管理](docs/更新与发布.md) 和 [CHANGELOG](CHANGELOG.md)。
 
 安装包不含账号系统；学习数据只存在本机浏览器。拍照识题和扫描版目录识别仍取决于接收方当前模型的视觉能力与额度。
 

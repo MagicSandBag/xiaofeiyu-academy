@@ -8,6 +8,9 @@ window.__ModuleLoader__.load({
     const NS = 'xiaofeiyu-academy';
     const STORAGE_KEY = 'xiaofeiyu-academy:v1';
     const ART = '/xiaofeiyu-academy/assets/';
+    const APP_VERSION = '1.2.1';
+    const UPDATE_API = '/xiaofeiyu-academy/update';
+    const UPDATE_PAGE = 'https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest';
 
     const zh = {
       'app.title': '小肥鱼学习平台',
@@ -151,7 +154,17 @@ window.__ModuleLoader__.load({
       'settings.reset': '重置全部学习进度',
       'settings.resetConfirm': '真的重置？再点一次',
       'settings.about': '关于小肥鱼',
-      'settings.aboutText': '小肥鱼学习平台 1.2 · 本地保存进度 · 默认不联网；拍照识题需主动点击，调用当前模型一次。',
+      'settings.update': '版本更新',
+      'settings.currentVersion': '当前版本',
+      'settings.checkUpdate': '检查更新',
+      'settings.checking': '正在检查…',
+      'settings.upToDate': '已经是最新版本',
+      'settings.updateAvailable': '发现新版本',
+      'settings.updateNotes': '更新内容',
+      'settings.downloadUpdate': '下载新版本',
+      'settings.updateHint': '下载后在 DSH 插件管理器里覆盖安装；学习数据会保留。',
+      'settings.updateFailed': '暂时检查不到更新，稍后再试。',
+      'settings.aboutText': '小肥鱼学习平台 1.2.1 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
       'settings.credit': '形象来自本机 dsh-pet 的小肥鱼 IP，仅供个人学习使用。',
       'toast.saved': '设置保存啦',
       'toast.reset': '学习进度已重置',
@@ -437,7 +450,17 @@ window.__ModuleLoader__.load({
       'settings.reset': 'Reset all progress',
       'settings.resetConfirm': 'Really reset? Tap again',
       'settings.about': 'About Fishy',
-      'settings.aboutText': 'Xiaofeiyu Academy 1.2 · progress stays local · no network by default; photo reading calls the current model once only when you tap it.',
+      'settings.update': 'Updates',
+      'settings.currentVersion': 'Current version',
+      'settings.checkUpdate': 'Check for updates',
+      'settings.checking': 'Checking…',
+      'settings.upToDate': 'You are up to date',
+      'settings.updateAvailable': 'New version available',
+      'settings.updateNotes': 'What’s new',
+      'settings.downloadUpdate': 'Download update',
+      'settings.updateHint': 'Install it over the old bundle in DSH; learning data is kept.',
+      'settings.updateFailed': 'Could not check for updates. Try again later.',
+      'settings.aboutText': 'Xiaofeiyu Academy 1.2.1 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
       'settings.credit': 'Mascot art comes from the local dsh-pet Xiaofeiyu IP, for personal study use.',
       'toast.saved': 'Settings saved',
       'toast.reset': 'Progress reset',
@@ -935,6 +958,26 @@ window.__ModuleLoader__.load({
 
     function bookKey(subject, grade, volume) {
       return `${subject}:${grade}:${volume}`;
+    }
+
+    function compareVersion(a, b) {
+      const pa = String(a || '').split('.').map((n) => Number(n) || 0);
+      const pb = String(b || '').split('.').map((n) => Number(n) || 0);
+      for (let i = 0; i < Math.max(pa.length, pb.length); i += 1) {
+        const diff = (pa[i] || 0) - (pb[i] || 0);
+        if (diff !== 0) return diff > 0 ? 1 : -1;
+      }
+      return 0;
+    }
+
+    let updatePromise = null;
+    function checkLatestUpdate(force = false) {
+      if (!force && updatePromise) return updatePromise;
+      updatePromise = fetch(`${UPDATE_API}${force ? '?t=' + Date.now() : ''}`, { cache: 'no-store' })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((payload) => (payload && payload.ok && payload.data && payload.data.version ? payload.data : null))
+        .catch(() => null);
+      return updatePromise;
     }
 
     function activeTextbook(data, curriculum, subject, grade, volume) {
@@ -2484,12 +2527,22 @@ window.__ModuleLoader__.load({
         background: #fff; color: var(--xfe-ink); font-size: 12px; font-weight: 900; cursor: pointer; outline: none;
       }
       .xfe-icon-btn {
-        width: 36px; height: 36px; display: grid; place-items: center; border: 2px solid var(--xfe-ink);
+        position: relative; width: 36px; height: 36px; display: grid; place-items: center; border: 2px solid var(--xfe-ink);
         border-radius: 13px; background: #fff; color: var(--xfe-ink); font-size: 16px; cursor: pointer;
         box-shadow: 0 3px 0 rgba(31,42,91,.18); transition: transform .15s ease, box-shadow .15s ease;
       }
       .xfe-icon-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 0 rgba(31,42,91,.18); }
       .xfe-icon-btn.is-close { background: var(--xfe-coral); color: #fff; }
+      .xfe-update-dot {
+        position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 50%;
+        background: var(--xfe-coral); border: 1.5px solid var(--xfe-paper); box-shadow: 0 1px 0 rgba(31,42,91,.3);
+      }
+      .xfe-update-box { padding: 10px 11px; border: 1.5px dashed var(--xfe-line-strong); border-radius: 11px; background: #fff; }
+      .xfe-update-box-head { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+      .xfe-update-box-head b { font-size: 11px; }
+      .xfe-update-box-head span { margin-left: auto; color: var(--xfe-ink-soft); font-size: 9px; font-weight: 800; }
+      .xfe-update-box p { margin: 6px 0 0; color: var(--xfe-ink-soft); font-size: 10px; line-height: 1.55; font-weight: 700; }
+      .xfe-update-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 
       .xfe-page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
       .xfe-page-head h1 { margin: 0; font-size: clamp(24px, 3vw, 34px); line-height: 1.08; letter-spacing: -.03em; font-weight: 900; }
@@ -3464,6 +3517,9 @@ window.__ModuleLoader__.load({
       const [mistakeFilter, setMistakeFilter] = useState('all');
       const [settingsOpen, setSettingsOpen] = useState(false);
       const [profileOpen, setProfileOpen] = useState(false);
+      const [updateInfo, setUpdateInfo] = useState(null);
+      const [updateChecking, setUpdateChecking] = useState(false);
+      const [updateError, setUpdateError] = useState('');
       const [settingsDraft, setSettingsDraft] = useState({ name: data.name, grade: data.grade, sound: data.settings.sound });
       const [resetArmed, setResetArmed] = useState(false);
       const [toast, setToast] = useState('');
@@ -3495,6 +3551,7 @@ window.__ModuleLoader__.load({
       useEffect(() => {
         let alive = true;
         loadCurriculum().then((loaded) => { if (alive) setCurriculum(loaded); });
+        checkLatestUpdate(false).then((info) => { if (alive && info) setUpdateInfo(info); });
         return () => { alive = false; };
       }, []);
 
@@ -3503,6 +3560,26 @@ window.__ModuleLoader__.load({
         if (toastTimer.current) clearTimeout(toastTimer.current);
         toastTimer.current = setTimeout(() => setToast(''), 2800);
       }, []);
+
+      const updateAvailable = Boolean(updateInfo && compareVersion(updateInfo.version, APP_VERSION) > 0);
+      const checkUpdate = useCallback(async (force = true) => {
+        if (updateChecking) return;
+        setUpdateChecking(true);
+        setUpdateError('');
+        const info = await checkLatestUpdate(force);
+        setUpdateChecking(false);
+        if (!info) {
+          setUpdateError(t('settings.updateFailed'));
+          if (force) notify(t('settings.updateFailed'));
+          return;
+        }
+        setUpdateInfo(info);
+        if (compareVersion(info.version, APP_VERSION) > 0) {
+          notify(`${t('settings.updateAvailable')} v${info.version}`);
+        } else if (force) {
+          notify(t('settings.upToDate'));
+        }
+      }, [notify, t, updateChecking]);
 
       const commit = useCallback((fn) => {
         setData((prev) => {
@@ -4188,6 +4265,7 @@ window.__ModuleLoader__.load({
             onGrade: (grade) => commit((d) => { d.grade = grade; }),
             onSettings: openSettings,
             onProfiles: () => setProfileOpen(true),
+            updateAvailable,
             onClose,
             onSound: () => commit((d) => { d.settings.sound = !d.settings.sound; }),
             closeRef,
@@ -4214,6 +4292,12 @@ window.__ModuleLoader__.load({
               onClose: () => setSettingsOpen(false),
               onReset: resetAll,
               resetArmed,
+              appVersion: APP_VERSION,
+              updateInfo,
+              updateChecking,
+              updateError,
+              onCheckUpdate: checkUpdate,
+              onOpenUpdate: () => window.open((updateInfo && updateInfo.download) || UPDATE_PAGE, '_blank', 'noopener'),
             })
           : null,
         captureOpen
@@ -4295,7 +4379,7 @@ window.__ModuleLoader__.load({
       );
     }
 
-    function Header({ t, data, title, level, onGrade, onSettings, onClose, onSound, onProfiles, closeRef, embedded = false }) {
+    function Header({ t, data, title, level, onGrade, onSettings, onClose, onSound, onProfiles, updateAvailable = false, closeRef, embedded = false }) {
       const activeChild = (data.children || []).find((child) => child.id === data.activeChildId) || (data.children || [])[0];
       return h(
         'header',
@@ -4328,7 +4412,10 @@ window.__ModuleLoader__.load({
         h('span', { className: 'xfe-chip is-sun', title: t('header.coins') }, '🪙', `${data.coins}`),
         h('span', { className: 'xfe-chip is-mint', title: t('header.level') }, '⭐', `Lv.${level}`),
         h('button', { type: 'button', className: 'xfe-icon-btn', onClick: onSound, title: data.settings.sound ? '音效开' : '音效关', 'aria-label': data.settings.sound ? '音效开' : '音效关' }, data.settings.sound ? '🔊' : '🔇'),
-        h('button', { type: 'button', className: 'xfe-icon-btn', onClick: onSettings, title: t('header.settings'), 'aria-label': t('header.settings') }, '⚙️'),
+        h('button', { type: 'button', className: `xfe-icon-btn ${updateAvailable ? 'has-update' : ''}`, onClick: onSettings, title: t('header.settings'), 'aria-label': t('header.settings') },
+          '⚙️',
+          updateAvailable ? h('span', { className: 'xfe-update-dot', 'aria-label': t('settings.updateAvailable') }) : null,
+        ),
         h('button', { type: 'button', className: 'xfe-icon-btn is-close', onClick: onClose, title: embedded ? t('header.exit') : t('header.close'), 'aria-label': embedded ? t('header.exit') : t('header.close'), ref: closeRef }, embedded ? '↩' : '✕'),
       );
     }
@@ -6048,7 +6135,9 @@ window.__ModuleLoader__.load({
       );
     }
 
-    function SettingsSheet({ t, draft, setDraft, onSave, onClose, onReset, resetArmed }) {
+    function SettingsSheet({ t, draft, setDraft, onSave, onClose, onReset, resetArmed, appVersion, updateInfo, updateChecking, updateError, onCheckUpdate, onOpenUpdate }) {
+      const hasUpdate = Boolean(updateInfo && compareVersion(updateInfo.version, appVersion) > 0);
+      const notes = updateInfo && Array.isArray(updateInfo.notes) ? updateInfo.notes.slice(0, 4) : [];
       return h(
         'div',
         { className: 'xfe-settings-layer', onMouseDown: (e) => { if (e.target === e.currentTarget) onClose(); } },
@@ -6074,6 +6163,24 @@ window.__ModuleLoader__.load({
             h('div', { className: 'xfe-switch-row' },
               h('span', { className: 'xfe-card-sub' }, '答对叮咚，答错咕噜。'),
               h('button', { type: 'button', className: `xfe-switch ${draft.sound ? 'is-on' : ''}`, onClick: () => setDraft({ ...draft, sound: !draft.sound }), 'aria-pressed': draft.sound, 'aria-label': t('settings.sound') }),
+            ),
+          ),
+          h('div', { className: 'xfe-field' },
+            h('label', null, t('settings.update')),
+            h('div', { className: 'xfe-update-box' },
+              h('div', { className: 'xfe-update-box-head' },
+                h('b', null, `${t('settings.currentVersion')} v${appVersion}`),
+                h('span', null, hasUpdate ? `${t('settings.updateAvailable')} v${updateInfo.version}` : updateInfo ? t('settings.upToDate') : ''),
+              ),
+              hasUpdate && notes.length
+                ? h('p', null, h('b', null, t('settings.updateNotes') + '：'), notes.join(' · '))
+                : null,
+              hasUpdate ? h('p', null, t('settings.updateHint')) : null,
+              updateError ? h('p', { style: { color: 'var(--xfe-danger-ink)' } }, updateError) : null,
+              h('div', { className: 'xfe-update-actions' },
+                h('button', { type: 'button', className: 'xfe-btn is-ghost is-sm', disabled: updateChecking, onClick: () => onCheckUpdate(true) }, updateChecking ? '⏳ ' + t('settings.checking') : '🔄 ' + t('settings.checkUpdate')),
+                hasUpdate ? h('button', { type: 'button', className: 'xfe-btn is-primary is-sm', onClick: onOpenUpdate }, '⬇️ ', t('settings.downloadUpdate')) : null,
+              ),
             ),
           ),
           h('div', { className: 'xfe-field' },

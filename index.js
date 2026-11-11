@@ -15,6 +15,9 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const ASSETS = join(ROOT, 'assets');
 const PREFIX = '/xiaofeiyu-academy/assets/';
 const HEALTH_PATH = '/xiaofeiyu-academy/health';
+const UPDATE_PATH = '/xiaofeiyu-academy/update';
+const UPDATE_MANIFEST_URL = 'https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest/download/update.json';
+const UPDATE_RELEASE_API = 'https://api.github.com/repos/MagicSandBag/xiaofeiyu-academy/releases/latest';
 const ANALYZE_PATH = '/xiaofeiyu-academy/analyze-homework';
 const ANALYZE_TOC_PATH = '/xiaofeiyu-academy/analyze-toc';
 const MAX_BODY_BYTES = 8 * 1024 * 1024;
@@ -229,13 +232,110 @@ export function apply(ctx) {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json; charset=utf-8');
           res.setHeader('Cache-Control', 'no-store');
-          const body = JSON.stringify({ ok: true, app: 'xiaofeiyu-academy', version: 4 });
+          const body = JSON.stringify({ ok: true, app: 'xiaofeiyu-academy', version: 5 });
           if (req.method === 'HEAD') res.end();
           else res.end(body);
         },
       }),
     'xiaofeiyu-academy: health route',
   );
+
+  ctx.effect(() => {
+    let cachedAt = 0;
+    let cached = null;
+    return ctx.webServer.register({
+      kind: 'exact',
+      path: UPDATE_PATH,
+      handler: async (req, res) => {
+        if (req.method !== 'GET' && req.method !== 'HEAD') {
+          res.statusCode = 405;
+          res.setHeader('Allow', 'GET, HEAD');
+          res.end();
+          return;
+        }
+        let force = false;
+        try {
+          force = new URL(req.url, 'http://localhost').searchParams.has('t');
+        } catch {
+          force = false;
+        }
+        if (!force && cached && Date.now() - cachedAt < 6 * 60 * 60 * 1000) {
+          sendJson(res, 200, { ok: true, data: cached });
+          return;
+        }
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 20_000);
+        try {
+          let raw = null;
+          try {
+            const apiResponse = await fetch(UPDATE_RELEASE_API, {
+              signal: controller.signal,
+              headers: {
+                Accept: 'application/vnd.github+json',
+                'User-Agent': 'xiaofeiyu-academy',
+                'X-GitHub-Api-Version': '2022-11-28',
+              },
+            });
+            if (apiResponse.ok) {
+              const release = await apiResponse.json();
+              const version = String(release.tag_name || '').replace(/^v/, '');
+              const asset = Array.isArray(release.assets)
+                ? release.assets.find((item) => item && item.name === `xiaofeiyu-academy-${version}.tgz`)
+                : null;
+              if (version && asset && asset.browser_download_url) {
+                raw = {
+                  version,
+                  channel: release.prerelease ? 'beta' : 'stable',
+                  publishedAt: release.published_at || '',
+                  download: asset.browser_download_url,
+                  sha256: typeof asset.digest === 'string' ? asset.digest.replace(/^sha256:/, '') : '',
+                  size: Number(asset.size) || 0,
+                  notes: String(release.body || '').split(/\r?\n/).map((line) => line.replace(/^[-*#\s]+/, '').trim()).filter(Boolean).slice(0, 6),
+                  minDsh: '1.0.0',
+                };
+              }
+            }
+          } catch {
+            /* fall back to the published update.json */
+          }
+          if (!raw) {
+            const response = await fetch(UPDATE_MANIFEST_URL, {
+              signal: controller.signal,
+              headers: { Accept: 'application/json', 'User-Agent': 'xiaofeiyu-academy' },
+            });
+            if (!response.ok) throw new Error(`manifest HTTP ${response.status}`);
+            raw = await response.json();
+          }
+          if (!raw || typeof raw.version !== 'string' || !/^\d+(?:\.\d+){1,3}$/.test(raw.version)) {
+            throw new Error('manifest version is invalid');
+          }
+          if (typeof raw.download !== 'string' || !/^https:\/\//.test(raw.download)) {
+            throw new Error('manifest download is invalid');
+          }
+          cached = {
+            version: raw.version,
+            channel: raw.channel === 'beta' ? 'beta' : 'stable',
+            publishedAt: typeof raw.publishedAt === 'string' ? raw.publishedAt : '',
+            download: raw.download,
+            sha256: typeof raw.sha256 === 'string' ? raw.sha256 : '',
+            size: Number(raw.size) || 0,
+            notes: Array.isArray(raw.notes) ? raw.notes.filter((note) => typeof note === 'string').slice(0, 6) : [],
+            minDsh: typeof raw.minDsh === 'string' ? raw.minDsh : '',
+          };
+          cachedAt = Date.now();
+          sendJson(res, 200, { ok: true, data: cached });
+        } catch (error) {
+          sendJson(res, 200, {
+            ok: false,
+            reason: 'unavailable',
+            message: error instanceof Error ? error.message : '更新服务暂时不可用。',
+          });
+        } finally {
+          clearTimeout(timer);
+        }
+      },
+    });
+  }, 'xiaofeiyu-academy: update manifest route');
 
   ctx.effect(
     () =>
