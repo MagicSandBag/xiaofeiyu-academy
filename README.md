@@ -126,7 +126,7 @@ file:C:/Users/你的用户名/Downloads/xiaofeiyu-academy-1.2.1.tgz
 ## 验证
 
 - `node --check client.js` / `node --check index.js`
-- 界面预览：[全屏浮层](docs/preview-home.png) · [宽屏全屏](docs/preview-overlay-wide.png) · [右下角入口](docs/preview-launcher.png) · [左侧嵌入面板](docs/preview-sidebar.png) · [学习档案](docs/preview-profiles.png) · [头像选择](docs/preview-avatar.png) · [教材库](docs/preview-library.png) · [文字层导入](docs/preview-import.png) · [扫描版导入](docs/preview-scan-import.png) · [数学真分数](docs/preview-math.png) · [变式再练](docs/preview-variant.png) · [学情报告](docs/preview-report.png) · [完赛成绩](docs/preview-result.png) · [移动端](docs/preview-mobile.png)
+- 界面预览：[全屏浮层](docs/preview-home.png) · [宽屏全屏](docs/preview-overlay-wide.png) · [右下角入口](docs/preview-launcher.png) · [左侧嵌入面板](docs/preview-sidebar.png) · [学习档案](docs/preview-profiles.png) · [头像选择](docs/preview-avatar.png) · [教材库](docs/preview-library.png) · [文字层导入](docs/preview-import.png) · [扫描版导入](docs/preview-scan-import.png) · [数学真分数](docs/preview-math.png) · [检查更新](docs/preview-update.png) · [变式再练](docs/preview-variant.png) · [学情报告](docs/preview-report.png) · [完赛成绩](docs/preview-result.png) · [移动端](docs/preview-mobile.png)
 - 用 React UMD + Playwright 在本地 harness 中实际渲染并走通：左侧嵌入面板 + 浮层两个入口、首页 → 闯关 → 答题反馈 → 完赛成绩 → 答疑 → 出题/对答案 → 教材库 → 知识点详情 → PDF 目录导入 → 拍照/手动录入 → 变式再练 → 掌握贝壳 → 错题复习 → 任务领取 → 专注计时 → 7/30 天报告 → 设置保存 → 关闭，以及 390px 移动端布局。
 - 已验证多孩子档案：添加“小贝壳”后错题为 0；切回“小海星”错题恢复为 1；刷新后仍是小海星；再切到小贝壳仍为 0。档案互不串数据。
 - 头像选择改成 42px 大按钮：当前头像有高亮底、描边和右上角 ✓，下方还有“已选择 🐸”状态行；点击另一个头像会立即换选中。
