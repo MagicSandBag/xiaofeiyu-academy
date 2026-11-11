@@ -1,0 +1,50 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build bundle and update manifest
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = "${{ github.ref_name }}"
+          $version = $tag.TrimStart('v')
+          $pkg = Get-Content package.json -Raw -Encoding utf8 | ConvertFrom-Json
+          if ($pkg.version -ne $version) {
+            throw "package.json version $($pkg.version) does not match tag $tag"
+          }
+          ./scripts/build-release.ps1 `
+            -BaseUrl "https://github.com/${{ github.repository }}/releases/download/$tag" `
+            -Channel stable `
+            -Notes "See CHANGELOG.md for details." `
+            -MinDsh "1.0.0"
+
+      - name: Publish GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = "${{ github.ref_name }}"
+          $assets = @(Get-ChildItem release -File | Select-Object -ExpandProperty FullName)
+          if ($assets.Count -eq 0) { throw 'No release assets were built.' }
+          gh release create $tag $assets `
+            --title "小肥鱼学习平台 $tag" `
+            --notes-file CHANGELOG.md

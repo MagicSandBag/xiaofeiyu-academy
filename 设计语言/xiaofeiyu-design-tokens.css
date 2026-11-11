@@ -1,0 +1,476 @@
+/* ==========================================================================
+   小肥鱼学习平台 · 海底糖果设计语言 v1.0
+   Design Tokens & Core Primitives
+   --------------------------------------------------------------------------
+   适用：DeepSeek Harness 插件「小肥鱼学习平台」
+   入口：左侧「小肥鱼学堂」嵌入式主面板 + 右下角快捷浮层
+   用法：在设计语言页或新页面入口引入本文件
+        <link rel="stylesheet" href="./xiaofeiyu-design-tokens.css">
+   原则：组件只消费 token；新增颜色/圆角/阴影必须先进入本文件。
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+  accent-color: #ff6f61;
+
+  /* ---------- L0 奶油纸 · 结构层 ---------------------------------------- */
+  --xfe-ink: #1f2a5b;             /* 标题、描边、主文字（对奶油 12.9:1） */
+  --xfe-ink-soft: #465184;        /* 正文、说明（对纸白 7.5:1） */
+  --xfe-ink-faint: #5f688c;       /* 占位、弱提示（对纸白 5.6:1） */
+  --xfe-cream: #fff8e6;           /* 学习舱底色 */
+  --xfe-paper: #fffdf7;           /* 卡片、面板 */
+  --xfe-sea: #f0fdff;             /* 海水浅底 */
+  --xfe-sea-2: #e6f9f5;           /* 海水浅底 · 偏薄荷 */
+  --xfe-line: rgba(31, 42, 91, 0.16);   /* 内部虚线、弱分割 */
+  --xfe-line-strong: rgba(31, 42, 91, 0.30); /* 输入框、强调分隔 */
+
+  /* ---------- L1 深海骨架 ------------------------------------------------ */
+  --xfe-navy: #1b2550;            /* 侧栏、模态遮罩、最深文字 */
+  --xfe-navy-2: #24336e;          /* 侧栏渐变中段 */
+  --xfe-navy-3: #172047;          /* 侧栏渐变末端 */
+  --xfe-navy-soft: #2a3874;       /* 侧栏悬浮态 */
+  --xfe-grad-rail: linear-gradient(180deg, #1b2550 0%, #24336e 60%, #172047 100%);
+
+  /* ---------- L2 糖果色 · 品牌与强调 ------------------------------------ */
+  --xfe-coral: #ff6f61;           /* 主 CTA、错误、重点 */
+  --xfe-coral-soft: #ffe1d8;      /* 珊瑚浅底 */
+  --xfe-coral-ink: #a9342a;       /* 珊瑚浅底上的文字 */
+  --xfe-on-coral: #2a1420;        /* 亮珊瑚上的小字（AA）；不要用纯白 */
+  --xfe-coral-deep: #c43c31;      /* 需要白字的深珊瑚底（5.2:1） */
+  --xfe-sun: #ffd23f;             /* 奖励、金币、选中 */
+  --xfe-sun-soft: #fff3bf;
+  --xfe-mint: #20c8b8;            /* 正确、成长、专注 */
+  --xfe-mint-soft: #d9faf1;
+  --xfe-mint-ink: #086b61;
+  --xfe-sky: #7bdff2;             /* 海水高光、提示 */
+  --xfe-sky-soft: #e7fbff;
+  --xfe-lilac: #b9a7ff;           /* 混合关卡、装饰 */
+  --xfe-lilac-soft: #efeaff;
+  --xfe-pink: #ffb7d5;            /* 饱饱度、贴纸 */
+  --xfe-pink-soft: #ffe8f1;
+
+  /* ---------- L3 学科色 ------------------------------------------------- */
+  --xfe-math: #ff7a59;
+  --xfe-math-soft: #ffe1d8;
+  --xfe-math-ring: #ffb39e;
+  --xfe-chinese: #0aafa0;
+  --xfe-chinese-soft: #d3f7f1;
+  --xfe-chinese-ring: #8ee2d8;
+  --xfe-english: #6e7bff;
+  --xfe-english-soft: #e4e6ff;
+  --xfe-english-ring: #b8beff;
+
+  /* ---------- L4 状态色 · 永远和形状/文字一起出现 ----------------------- */
+  --xfe-success: #0b8f81;
+  --xfe-success-soft: #d9faf1;
+  --xfe-success-ink: #086b61;
+  --xfe-warning: #c69b19;
+  --xfe-warning-soft: #fff3bf;
+  --xfe-warning-ink: #604b0c;
+  --xfe-danger: #d94b40;
+  --xfe-danger-soft: #ffe6e2;
+  --xfe-danger-ink: #a4332a;
+  --xfe-info: #3d6fd8;
+  --xfe-info-soft: #e4eeff;
+  --xfe-info-ink: #24479a;
+
+  /* ---------- 渐变 · 只允许这些位置 ------------------------------------- */
+  --xfe-grad-hero:
+    radial-gradient(circle at 86% 24%, #fff6be 0%, rgba(255, 246, 190, 0) 30%),
+    linear-gradient(128deg, #ffffff 0%, #fff4d1 52%, #ffe0c7 100%);
+  --xfe-grad-focus: linear-gradient(145deg, #e9fbff 0%, #c9f6f1 100%);
+  --xfe-grad-tip: linear-gradient(140deg, #fff7cf 0%, #ffe7ef 100%);
+  --xfe-grad-launcher: linear-gradient(160deg, #fff7c9 0%, #ffd23f 55%, #ff9c5b 100%);
+  --xfe-grad-brand: linear-gradient(150deg, #ffd23f 0%, #ff8a63 100%);
+  --xfe-grad-xp: linear-gradient(90deg, #ffd23f 0%, #ffa14a 100%);
+  --xfe-grad-hunger: linear-gradient(90deg, #ffb7d5 0%, #ff6f61 100%);
+
+  /* ---------- 字体 ------------------------------------------------------ */
+  --xfe-font-ui: "Nunito", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+                 "Noto Sans SC", system-ui, sans-serif;
+  --xfe-font-number: "Nunito", "Inter", "PingFang SC", "Microsoft YaHei",
+                     system-ui, sans-serif;
+  --xfe-fw-heavy: 800;
+  --xfe-fw-black: 900;
+  --xfe-fs-hero: clamp(26px, 3.2vw, 42px);
+  --xfe-fs-page: clamp(24px, 3vw, 34px);
+  --xfe-fs-h2: 20px;
+  --xfe-fs-card: 16px;
+  --xfe-fs-question: clamp(21px, 2.5vw, 30px);
+  --xfe-fs-body: 14px;
+  --xfe-fs-sm: 12px;
+  --xfe-fs-caption: 10px;
+  --xfe-fs-chip: 13px;
+  --xfe-fs-answer: 15px;
+  --xfe-lh-display: 1.02;
+  --xfe-lh-heading: 1.2;
+  --xfe-lh-body: 1.6;
+
+  /* ---------- 间距 · 4px 基准 ------------------------------------------ */
+  --xfe-sp-1: 4px;
+  --xfe-sp-2: 6px;
+  --xfe-sp-3: 8px;
+  --xfe-sp-4: 10px;
+  --xfe-sp-5: 12px;
+  --xfe-sp-6: 14px;
+  --xfe-sp-7: 16px;
+  --xfe-sp-8: 18px;
+  --xfe-sp-9: 20px;
+  --xfe-sp-10: 24px;
+  --xfe-sp-11: 26px;
+  --xfe-sp-12: 32px;
+  --xfe-sp-13: 40px;
+  --xfe-sp-14: 48px;
+
+  /* ---------- 圆角 · 只保留 7 档 --------------------------------------- */
+  --xfe-r-xs: 10px;      /* 小图标、迷你标签 */
+  --xfe-r-sm: 14px;      /* 按钮、输入框 */
+  --xfe-r-md: 18px;      /* 导航项、小卡 */
+  --xfe-r-lg: 23px;      /* 标准卡片 */
+  --xfe-r-xl: 26px;      /* 大卡、嵌入式外壳 */
+  --xfe-r-2xl: 34px;     /* 学习舱外框 */
+  --xfe-r-full: 999px;   /* 胶囊、头像、环形 */
+
+  /* ---------- 描边 ------------------------------------------------------ */
+  --xfe-bw-thin: 1.5px;
+  --xfe-bw: 2px;
+  --xfe-bw-frame: 3px;
+  --xfe-border: var(--xfe-bw) solid var(--xfe-ink);
+  --xfe-border-soft: var(--xfe-bw-thin) solid var(--xfe-line);
+
+  /* ---------- 阴影 · 硬投影是“可按下”的承诺 ---------------------------- */
+  --xfe-shadow-hard-xs: 0 2px 0 rgba(31, 42, 91, 0.20);
+  --xfe-shadow-hard-sm: 0 3px 0 rgba(31, 42, 91, 0.20);
+  --xfe-shadow-button: 0 4px 0 var(--xfe-ink);
+  --xfe-shadow-card: 0 5px 0 rgba(31, 42, 91, 0.20);
+  --xfe-shadow-float: 0 7px 0 var(--xfe-ink), 0 14px 28px rgba(13, 24, 60, 0.35);
+  --xfe-shadow-modal:
+    0 16px 0 rgba(8, 15, 40, 0.38),
+    0 36px 90px rgba(4, 10, 30, 0.48);
+  --xfe-shadow-inset: inset 0 -10px 0 rgba(31, 42, 91, 0.06);
+  --xfe-shadow-focus: 0 0 0 3px rgba(255, 111, 97, 0.28);
+
+  /* ---------- 动效 ------------------------------------------------------ */
+  --xfe-dur-fast: 140ms;
+  --xfe-dur-base: 220ms;
+  --xfe-dur-pop: 200ms;
+  --xfe-dur-float: 4.4s;
+  --xfe-dur-bob: 4.4s;
+  --xfe-dur-wiggle: 2.4s;
+  --xfe-dur-confetti: 2.6s;
+  --xfe-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --xfe-ease-spring: cubic-bezier(0.2, 1.5, 0.4, 1);
+  --xfe-ease-linear: linear;
+
+  /* ---------- 布局 ------------------------------------------------------ */
+  --xfe-app-max: 1260px;
+  --xfe-app-h: min(870px, calc(100vh - 36px));
+  --xfe-rail-w: 98px;
+  --xfe-side-w: 302px;
+  --xfe-main-pad: 20px 26px 32px;
+  --xfe-launcher-size: 84px;
+  --xfe-launcher-bottom: 176px;
+  --xfe-tap-min: 44px;
+  --xfe-tap-kid: 48px;
+
+  /* ---------- 层级 ------------------------------------------------------ */
+  --xfe-z-launcher: 2147483000;
+  --xfe-z-modal: 2147483000;
+  --xfe-z-toast: 2147483200;
+
+  /* ---------- 装饰配额（供 code review 用） ----------------------------- */
+  --xfe-quota-stickers: 3;
+  --xfe-quota-coral-actions: 1;
+  --xfe-quota-ambient-motion: 1;
+}
+
+/* ==========================================================================
+   Primitives · 只放跨页面复用的最小积木
+   ========================================================================== */
+
+.xfe-card {
+  background: var(--xfe-paper);
+  border: var(--xfe-border);
+  border-radius: var(--xfe-r-lg);
+  box-shadow: var(--xfe-shadow-card);
+}
+
+.xfe-card.is-soft {
+  background: rgba(255, 255, 255, 0.66);
+  border: var(--xfe-bw) dashed var(--xfe-line);
+  box-shadow: none;
+}
+
+.xfe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--xfe-sp-3);
+  min-height: var(--xfe-tap-min);
+  padding: 9px 18px;
+  border: var(--xfe-border);
+  border-radius: var(--xfe-r-sm);
+  background: var(--xfe-paper);
+  color: var(--xfe-ink);
+  font-family: var(--xfe-font-ui);
+  font-size: 13px;
+  font-weight: var(--xfe-fw-black);
+  line-height: 1.15;
+  cursor: pointer;
+  box-shadow: var(--xfe-shadow-button);
+  transition:
+    transform var(--xfe-dur-fast) var(--xfe-ease-out),
+    box-shadow var(--xfe-dur-fast) var(--xfe-ease-out),
+    filter var(--xfe-dur-fast) var(--xfe-ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.xfe-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--xfe-ink);
+  filter: brightness(1.02);
+}
+
+.xfe-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--xfe-ink);
+}
+
+.xfe-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--xfe-shadow-button);
+  filter: grayscale(0.2);
+}
+
+.xfe-btn:focus-visible,
+.xfe-chip:focus-visible,
+.xfe-card:focus-visible {
+  outline: none;
+  box-shadow: var(--xfe-shadow-button), var(--xfe-shadow-focus);
+}
+
+.xfe-btn.is-primary {
+  background: var(--xfe-coral);
+  color: var(--xfe-on-coral);
+}
+
+.xfe-btn.is-sun {
+  background: var(--xfe-sun);
+  color: var(--xfe-ink);
+}
+
+.xfe-btn.is-mint {
+  background: var(--xfe-mint);
+  color: var(--xfe-ink);
+}
+
+.xfe-btn.is-ghost {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 3px 0 rgba(31, 42, 91, 0.25);
+}
+
+.xfe-btn.is-sm {
+  min-height: 32px;
+  padding: 5px 11px;
+  border-radius: 11px;
+  font-size: 11px;
+  box-shadow: 0 3px 0 var(--xfe-ink);
+}
+
+.xfe-btn.is-full {
+  width: 100%;
+}
+
+.xfe-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: var(--xfe-border);
+  border-radius: 13px;
+  background: var(--xfe-paper);
+  color: var(--xfe-ink);
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: var(--xfe-shadow-hard-sm);
+  transition: transform var(--xfe-dur-fast) var(--xfe-ease-out);
+}
+
+.xfe-icon-btn:hover {
+  transform: translateY(-2px);
+}
+
+.xfe-icon-btn.is-close {
+  background: var(--xfe-coral);
+  color: var(--xfe-on-coral);
+}
+
+.xfe-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--xfe-sp-2);
+  min-height: 34px;
+  padding: 5px 10px;
+  border: var(--xfe-border);
+  border-radius: var(--xfe-r-full);
+  background: var(--xfe-paper);
+  color: var(--xfe-ink);
+  font-family: var(--xfe-font-ui);
+  font-size: var(--xfe-fs-chip);
+  font-weight: var(--xfe-fw-black);
+  white-space: nowrap;
+  box-shadow: 0 3px 0 rgba(31, 42, 91, 0.18);
+}
+
+.xfe-chip.is-coral {
+  background: var(--xfe-coral-soft);
+}
+
+.xfe-chip.is-sun {
+  background: var(--xfe-sun-soft);
+}
+
+.xfe-chip.is-mint {
+  background: var(--xfe-mint-soft);
+}
+
+.xfe-chip.is-sky {
+  background: var(--xfe-sky-soft);
+}
+
+.xfe-chip.is-lilac {
+  background: var(--xfe-lilac-soft);
+}
+
+.xfe-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--xfe-sp-2);
+  margin-bottom: 7px;
+  padding: 3px 9px;
+  border: var(--xfe-bw-thin) solid var(--xfe-ink);
+  border-radius: var(--xfe-r-full);
+  background: var(--xfe-sun);
+  color: var(--xfe-ink);
+  font-size: 9px;
+  font-weight: var(--xfe-fw-black);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.xfe-progress {
+  height: 9px;
+  border: var(--xfe-bw-thin) solid rgba(31, 42, 91, 0.18);
+  border-radius: var(--xfe-r-full);
+  background: rgba(31, 42, 91, 0.10);
+  overflow: hidden;
+}
+
+.xfe-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--xfe-grad-xp);
+  transition: width var(--xfe-dur-base) var(--xfe-ease-out);
+}
+
+.xfe-progress.is-hunger > span {
+  background: var(--xfe-grad-hunger);
+}
+
+.xfe-speech {
+  position: relative;
+  display: inline-block;
+  padding: 9px 12px;
+  border: var(--xfe-border);
+  border-radius: 15px;
+  background: var(--xfe-paper);
+  color: var(--xfe-ink);
+  font-size: 11px;
+  font-weight: var(--xfe-fw-black);
+  line-height: 1.35;
+  box-shadow: var(--xfe-shadow-hard-sm);
+}
+
+.xfe-speech::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: -8px;
+  width: 12px;
+  height: 12px;
+  background: var(--xfe-paper);
+  border-right: var(--xfe-border);
+  border-bottom: var(--xfe-border);
+  transform: rotate(45deg);
+}
+
+.xfe-dot-paper {
+  background-color: var(--xfe-cream);
+  background-image: radial-gradient(rgba(31, 42, 91, 0.055) 1.4px, transparent 1.4px);
+  background-size: 18px 18px;
+}
+
+.xfe-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 动效：只给需要呼吸的一处 */
+@keyframes xfe-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-7px) rotate(1deg); }
+}
+
+@keyframes xfe-bob {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-9px) rotate(1.5deg); }
+}
+
+@keyframes xfe-wiggle {
+  0%, 100% { transform: rotate(-12deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.08); }
+}
+
+@keyframes xfe-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.xfe-animate-float { animation: xfe-float var(--xfe-dur-float) ease-in-out infinite; }
+.xfe-animate-bob { animation: xfe-bob var(--xfe-dur-bob) ease-in-out infinite; }
+.xfe-animate-wiggle { animation: xfe-wiggle var(--xfe-dur-wiggle) ease-in-out infinite; }
+.xfe-animate-pop { animation: xfe-pop var(--xfe-dur-pop) var(--xfe-ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .xfe-animate-float,
+  .xfe-animate-bob,
+  .xfe-animate-wiggle,
+  .xfe-animate-pop {
+    animation: none !important;
+  }
+  .xfe-btn,
+  .xfe-icon-btn,
+  .xfe-progress > span {
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ==========================================================================
+   使用示例
+   --------------------------------------------------------------------------
+   <button class="xfe-btn is-primary">开始今天的闯关</button>
+   <div class="xfe-card xfe-dot-paper">...</div>
+   <span class="xfe-chip is-sun">🪙 60</span>
+   <div class="xfe-progress"><span style="width:64%"></span></div>
+   ========================================================================== */

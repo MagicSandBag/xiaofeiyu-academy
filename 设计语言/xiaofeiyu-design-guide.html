@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小肥鱼学习平台 · 海底糖果设计语言 v1.2</title>
+<link rel="stylesheet" href="./xiaofeiyu-design-tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--xfe-ink-soft);
+    font-family: var(--xfe-font-ui);
+    font-size: var(--xfe-fs-body);
+    line-height: var(--xfe-lh-body);
+    background:
+      radial-gradient(900px 500px at 6% -4%, rgba(255, 210, 63, .20), transparent 62%),
+      radial-gradient(780px 500px at 96% 0%, rgba(123, 223, 242, .24), transparent 60%),
+      radial-gradient(760px 620px at 50% 100%, rgba(255, 183, 213, .16), transparent 64%),
+      var(--xfe-cream);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: radial-gradient(rgba(31, 42, 91, .055) 1.4px, transparent 1.4px);
+    background-size: 18px 18px;
+  }
+  a { color: inherit; }
+  .g-wrap { max-width: 1200px; margin: 0 auto; padding: 26px 24px 86px; }
+
+  /* ===== Hero ===== */
+  .g-hero {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(280px, .88fr);
+    gap: 18px; align-items: center;
+    padding: 44px 42px 36px;
+    border: var(--xfe-bw-frame) solid var(--xfe-ink);
+    border-radius: var(--xfe-r-2xl);
+    background: var(--xfe-grad-hero);
+    box-shadow: var(--xfe-shadow-modal);
+  }
+  .g-hero::before {
+    content: "🫧"; position: absolute; right: 32%; top: 18px; font-size: 28px;
+    animation: xfe-float var(--xfe-dur-float) ease-in-out infinite; opacity: .9;
+  }
+  .g-hero::after {
+    content: "✨"; position: absolute; left: 43%; bottom: 18px; font-size: 20px;
+    animation: xfe-wiggle var(--xfe-dur-wiggle) ease-in-out infinite;
+  }
+  .g-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border: var(--xfe-bw) solid var(--xfe-ink);
+    border-radius: var(--xfe-r-full); background: var(--xfe-paper);
+    color: var(--xfe-ink); font-size: 10px; font-weight: 900;
+    letter-spacing: .12em; text-transform: uppercase;
+    box-shadow: var(--xfe-shadow-hard-xs);
+  }
+  .g-badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--xfe-coral); display: block; }
+  .g-hero h1 {
+    margin: 18px 0 12px;
+    color: var(--xfe-ink);
+    font-size: clamp(40px, 5.2vw, 64px);
+    font-weight: 900; line-height: .96; letter-spacing: -.055em;
+  }
+  .g-hero h1 .hl {
+    position: relative; z-index: 0; white-space: nowrap;
+  }
+  .g-hero h1 .hl::after {
+    content: ""; position: absolute; z-index: -1; left: -2%; right: -2%; bottom: 6%;
+    height: 34%; background: var(--xfe-sun); transform: rotate(-1.2deg); border-radius: 5px;
+  }
+  .g-hero p {
+    max-width: 540px; margin: 0; color: var(--xfe-ink-soft);
+    font-size: 14px; font-weight: 700; line-height: 1.75;
+  }
+  .g-hero p b { color: var(--xfe-ink); }
+  .g-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .g-meta span {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px; border: var(--xfe-bw-thin) solid var(--xfe-line-strong);
+    border-radius: var(--xfe-r-full); background: rgba(255, 255, 255, .7);
+    color: var(--xfe-ink); font-size: 10px; font-weight: 800;
+  }
+  .g-hero-art { position: relative; min-height: 300px; display: grid; place-items: center; }
+  .g-blob {
+    position: absolute; width: 290px; height: 290px;
+    border-radius: 48% 52% 43% 57% / 45% 45% 55% 55%;
+    background: radial-gradient(circle at 32% 24%, #d9f8ff, #9ae6f4 46%, #65cbe1);
+    border: 2px dashed rgba(31, 42, 91, .35);
+    box-shadow: inset 0 -12px 0 rgba(31, 42, 91, .06), 0 16px 0 rgba(31, 42, 91, .10);
+    animation: xfe-float 5.2s ease-in-out infinite;
+  }
+  .g-hero-art img {
+    position: relative; z-index: 2; width: 300px; max-width: 100%;
+    object-fit: contain; filter: drop-shadow(0 14px 12px rgba(31, 42, 91, .22));
+    animation: xfe-bob var(--xfe-dur-bob) ease-in-out infinite;
+  }
+  .g-hero-speech {
+    position: absolute; z-index: 4; right: -4px; top: 4px;
+    max-width: 170px; padding: 9px 12px;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 15px;
+    background: var(--xfe-paper); color: var(--xfe-ink);
+    font-size: 10px; font-weight: 900; line-height: 1.4;
+    box-shadow: var(--xfe-shadow-hard-sm); transform: rotate(2deg);
+  }
+  .g-hero-speech::after {
+    content: ""; position: absolute; left: 18px; bottom: -8px;
+    width: 12px; height: 12px; background: var(--xfe-paper);
+    border-right: var(--xfe-bw) solid var(--xfe-ink); border-bottom: var(--xfe-bw) solid var(--xfe-ink);
+    transform: rotate(45deg);
+  }
+  .g-version {
+    position: absolute; z-index: 4; left: 8px; bottom: 9px;
+    padding: 5px 10px; border: var(--xfe-bw) solid var(--xfe-ink);
+    border-radius: var(--xfe-r-full); background: var(--xfe-sun);
+    font-size: 10px; font-weight: 900; transform: rotate(-5deg);
+    box-shadow: var(--xfe-shadow-hard-xs);
+  }
+
+  /* ===== Shell / TOC ===== */
+  .g-shell { display: grid; grid-template-columns: 186px minmax(0, 1fr); gap: 28px; margin-top: 34px; }
+  .g-toc {
+    position: sticky; top: 20px; align-self: start;
+    padding: 14px; border: var(--xfe-bw) solid var(--xfe-ink);
+    border-radius: var(--xfe-r-lg); background: var(--xfe-paper);
+    box-shadow: var(--xfe-shadow-card);
+  }
+  .g-toc b { display: block; margin: 2px 0 8px; color: var(--xfe-ink); font-size: 10px; letter-spacing: .14em; }
+  .g-toc a {
+    display: grid; grid-template-columns: 24px 1fr; gap: 6px;
+    padding: 6px 4px; border-radius: 8px; text-decoration: none;
+    color: var(--xfe-ink-soft); font-size: 10px; font-weight: 800; line-height: 1.35;
+  }
+  .g-toc a:hover { background: var(--xfe-sun-soft); color: var(--xfe-ink); }
+  .g-toc a span { color: var(--xfe-coral); font-variant-numeric: tabular-nums; }
+
+  /* ===== Sections ===== */
+  .g-sec { margin-top: 54px; scroll-margin-top: 18px; }
+  .g-sec:first-child { margin-top: 0; }
+  .g-sechead { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .g-sechead .no {
+    width: 32px; height: 32px; display: grid; place-items: center;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 10px;
+    background: var(--xfe-navy); color: #fff; font-size: 10px; font-weight: 900;
+    box-shadow: var(--xfe-shadow-hard-xs);
+  }
+  .g-sechead h2 {
+    margin: 0; color: var(--xfe-ink); font-size: 24px; font-weight: 900;
+    letter-spacing: -.035em; line-height: 1.15;
+  }
+  .g-sechead .hint { font-size: 11px; font-weight: 700; color: var(--xfe-ink-soft); }
+  .g-panel {
+    padding: 24px; border: var(--xfe-bw) solid var(--xfe-ink);
+    border-radius: var(--xfe-r-lg); background: var(--xfe-paper);
+    box-shadow: var(--xfe-shadow-card);
+  }
+  .g-panel + .g-panel { margin-top: 12px; }
+  .g-lead { max-width: 780px; margin: 0 0 16px; font-size: 14px; line-height: 1.8; }
+  .g-lead b { color: var(--xfe-ink); }
+  .g-small { font-size: 12px; line-height: 1.7; color: var(--xfe-ink-soft); }
+  .g-label {
+    display: block; margin-bottom: 8px; color: var(--xfe-ink-faint);
+    font-size: 9px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .g-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .g-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .g-grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .g-note {
+    padding: 12px 14px; border: var(--xfe-bw-thin) dashed var(--xfe-line-strong);
+    border-radius: var(--xfe-r-sm); background: var(--xfe-sun-soft);
+    color: var(--xfe-ink); font-size: 11px; font-weight: 700; line-height: 1.65;
+  }
+  .g-note b { font-weight: 900; }
+
+  /* ===== Principle cards ===== */
+  .g-principle {
+    padding: 16px; border: var(--xfe-bw-thin) solid var(--xfe-line);
+    border-radius: var(--xfe-r-md); background: #fff;
+  }
+  .g-principle .ic {
+    width: 38px; height: 38px; display: grid; place-items: center;
+    margin-bottom: 10px; border: var(--xfe-bw) solid var(--xfe-ink);
+    border-radius: 12px; background: var(--ic, var(--xfe-sun)); font-size: 19px;
+    box-shadow: var(--xfe-shadow-hard-xs);
+  }
+  .g-principle b { display: block; color: var(--xfe-ink); font-size: 13px; font-weight: 900; }
+  .g-principle p { margin: 4px 0 0; font-size: 11px; font-weight: 700; line-height: 1.6; color: var(--xfe-ink-soft); }
+
+  /* ===== Material / formula ===== */
+  .g-material {
+    position: relative; overflow: hidden; padding: 16px;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: var(--xfe-r-md);
+    background: var(--m-bg, #fff); box-shadow: var(--xfe-shadow-hard-sm);
+  }
+  .g-material .swatch { height: 56px; border-radius: 12px; background: var(--m-swatch); border: 1px solid rgba(31,42,91,.12); }
+  .g-material b { display: block; margin-top: 9px; color: var(--xfe-ink); font-size: 13px; }
+  .g-material small { display: block; margin-top: 2px; font-size: 10px; font-weight: 700; color: var(--xfe-ink-soft); }
+  .g-formula {
+    display: flex; height: 34px; overflow: hidden; margin: 8px 0 9px;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 10px;
+    font-size: 9px; font-weight: 900;
+  }
+  .g-formula span { display: grid; place-items: center; border-right: 2px solid var(--xfe-ink); }
+  .g-formula span:last-child { border-right: 0; }
+  .g-formula .f1 { width: 62%; background: var(--xfe-cream); color: var(--xfe-ink); }
+  .g-formula .f2 { width: 22%; background: var(--xfe-navy); color: #fff; }
+  .g-formula .f3 { width: 16%; background: var(--xfe-coral); color: var(--xfe-on-coral); }
+
+  /* ===== Color ===== */
+  .g-layers { display: flex; flex-direction: column; gap: 7px; }
+  .g-layer {
+    display: grid; grid-template-columns: 54px 1fr auto; align-items: center; gap: 10px;
+    padding: 9px 12px; border: var(--xfe-bw-thin) solid var(--xfe-line);
+    border-radius: 11px; background: #fff;
+  }
+  .g-layer .tag { font-size: 9px; font-weight: 900; color: var(--xfe-coral-ink); letter-spacing: .08em; }
+  .g-layer b { color: var(--xfe-ink); font-size: 12px; }
+  .g-layer small { color: var(--xfe-ink-faint); font-size: 10px; font-weight: 700; }
+  .g-layer .dots { display: flex; gap: 4px; }
+  .g-layer .dots i { width: 18px; height: 18px; border-radius: 6px; border: 1px solid rgba(31,42,91,.12); background: var(--c); }
+
+  .g-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 9px; }
+  .g-sw {
+    display: flex; align-items: center; gap: 9px; padding: 8px;
+    border: var(--xfe-bw-thin) solid var(--xfe-line); border-radius: 11px; background: #fff;
+  }
+  .g-sw i { width: 42px; height: 42px; flex: 0 0 auto; border-radius: 10px; border: 1px solid rgba(31,42,91,.12); background: var(--c); }
+  .g-sw b { display: block; color: var(--xfe-ink); font-size: 11px; line-height: 1.2; }
+  .g-sw small { display: block; margin-top: 2px; color: var(--xfe-ink-faint); font-size: 9px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .g-sw code { font-size: 9px; color: var(--xfe-ink-soft); }
+
+  .g-subjects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .g-subject {
+    padding: 14px; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: var(--xfe-r-md);
+    background: #fff; box-shadow: var(--xfe-shadow-hard-sm);
+  }
+  .g-subject .top { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+  .g-subject .tile {
+    width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 13px;
+    background: var(--soft); font-size: 20px;
+  }
+  .g-subject b { display: block; color: var(--xfe-ink); font-size: 14px; }
+  .g-subject small { display: block; font-size: 9px; font-weight: 700; color: var(--xfe-ink-soft); }
+  .g-subject .track { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(31,42,91,.10); }
+  .g-subject .track i { display: block; height: 100%; width: var(--p, 60%); background: var(--c); }
+  .g-subject .num { display: flex; justify-content: space-between; margin-top: 5px; font-size: 9px; font-weight: 800; color: var(--xfe-ink-soft); }
+
+  .g-status-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .g-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px; border: var(--xfe-bw-thin) solid var(--xfe-line);
+    border-radius: 9px; background: var(--soft); color: var(--inkc);
+    font-size: 10px; font-weight: 900;
+  }
+
+  /* ===== Typography ===== */
+  .g-type-row {
+    display: grid; grid-template-columns: 128px minmax(0, 1fr) 140px;
+    gap: 14px; align-items: baseline; padding: 12px 0;
+    border-bottom: 1px dashed var(--xfe-line);
+  }
+  .g-type-row:last-child { border-bottom: 0; }
+  .g-type-row .meta { font-size: 9px; font-weight: 800; color: var(--xfe-ink-faint); line-height: 1.5; }
+  .g-type-row .meta b { display: block; color: var(--xfe-ink); font-size: 10px; }
+  .g-type-row .spec { font-size: 9px; font-weight: 700; color: var(--xfe-ink-soft); font-variant-numeric: tabular-nums; text-align: right; line-height: 1.5; }
+  .g-sample-hero { font-size: 38px; font-weight: 900; line-height: 1.02; letter-spacing: -.04em; color: var(--xfe-ink); }
+  .g-sample-page { font-size: 28px; font-weight: 900; line-height: 1.1; color: var(--xfe-ink); }
+  .g-sample-question { font-size: 23px; font-weight: 900; line-height: 1.4; color: var(--xfe-ink); }
+  .g-sample-body { font-size: 14px; font-weight: 700; line-height: 1.6; }
+  .g-sample-sm { font-size: 12px; font-weight: 700; }
+  .g-sample-cap { font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+
+  /* ===== Spacing / Radius / Shadow ===== */
+  .g-space { display: flex; flex-direction: column; gap: 7px; }
+  .g-space-row { display: grid; grid-template-columns: 70px 1fr 46px; gap: 9px; align-items: center; font-size: 9px; font-weight: 800; color: var(--xfe-ink-soft); }
+  .g-space-row i { display: block; height: 10px; border-radius: 3px; background: var(--xfe-coral); opacity: .85; }
+  .g-radius-grid, .g-shadow-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+  .g-radius, .g-shadow {
+    padding: 10px; border: var(--xfe-bw-thin) solid var(--xfe-line);
+    border-radius: 11px; background: #fff; text-align: center;
+  }
+  .g-radius .box { height: 52px; border: var(--xfe-bw) solid var(--xfe-ink); background: var(--xfe-sun-soft); border-radius: var(--r); }
+  .g-radius b, .g-shadow b { display: block; margin-top: 6px; color: var(--xfe-ink); font-size: 10px; }
+  .g-radius small, .g-shadow small { font-size: 8px; font-weight: 700; color: var(--xfe-ink-faint); }
+  .g-shadow .box { height: 48px; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 10px; background: var(--xfe-paper); box-shadow: var(--sh); }
+
+  /* ===== Layout ===== */
+  .g-appmap {
+    display: grid; grid-template-columns: 98px minmax(0,1fr) 302px; gap: 8px;
+    min-height: 220px; padding: 10px; border: var(--xfe-bw-frame) solid var(--xfe-ink);
+    border-radius: var(--xfe-r-2xl); background: var(--xfe-cream);
+    box-shadow: var(--xfe-shadow-hard-sm);
+  }
+  .g-zone {
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+    padding: 12px; border-radius: 18px; border: 2px dashed var(--xfe-line-strong);
+    color: var(--xfe-ink); font-size: 10px; font-weight: 900; text-align: center;
+  }
+  .g-zone small { font-size: 8px; font-weight: 700; color: var(--xfe-ink-soft); }
+  .g-zone.rail { background: var(--xfe-grad-rail); color: #fff; border: 0; }
+  .g-zone.rail small { color: #cfe8ff; }
+  .g-zone.main { background: var(--xfe-paper); }
+  .g-zone.side { background: linear-gradient(180deg, var(--xfe-sea), var(--xfe-sea-2)); }
+  .g-breakpoints { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+  .g-breakpoints span { padding: 4px 8px; border: var(--xfe-bw-thin) solid var(--xfe-line); border-radius: 999px; background: #fff; font-size: 9px; font-weight: 800; color: var(--xfe-ink-soft); }
+  .g-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .g-mode {
+    padding: 12px; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 14px;
+    background: #fff; box-shadow: var(--xfe-shadow-hard-sm);
+  }
+  .g-mode b { display: block; color: var(--xfe-ink); font-size: 12px; }
+  .g-mode p { margin: 4px 0 0; font-size: 10px; font-weight: 700; line-height: 1.55; }
+  .g-mode .mini {
+    display: flex; gap: 4px; height: 54px; margin-top: 9px; padding: 5px;
+    border-radius: 10px; background: var(--xfe-cream); border: 1px solid var(--xfe-line);
+  }
+  .g-mode .mini i { display: block; border-radius: 5px; background: var(--xfe-navy); }
+  .g-mode .mini i:nth-child(1) { width: 22px; }
+  .g-mode .mini i:nth-child(2) { flex: 1; background: var(--xfe-paper); border: 1px solid var(--xfe-line); }
+  .g-mode .mini i:nth-child(3) { width: 50px; background: var(--xfe-sea); }
+  .g-mode.is-pop .mini { background: rgba(27,37,80,.72); }
+
+  /* ===== Components ===== */
+  .g-btnrow { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; }
+  .g-card-demo {
+    display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px;
+    align-items: center; padding: 14px;
+  }
+  .g-card-icon { width: 44px; height: 44px; display: grid; place-items: center; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 13px; background: var(--xfe-math-soft); font-size: 20px; }
+  .g-card-demo b { display: block; color: var(--xfe-ink); font-size: 14px; }
+  .g-card-demo small { display: block; margin-top: 2px; font-size: 10px; font-weight: 700; }
+  .g-card-demo .num { font-size: 20px; font-weight: 900; color: var(--xfe-ink); font-variant-numeric: tabular-nums; }
+
+  .g-progress-row { display: grid; grid-template-columns: 74px 1fr 44px; gap: 8px; align-items: center; margin-top: 9px; font-size: 10px; font-weight: 800; }
+
+  .g-question { padding: 18px; }
+  .g-question .qtag { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .g-question h4 { margin: 0 0 13px; color: var(--xfe-ink); font-size: 22px; font-weight: 900; line-height: 1.4; letter-spacing: -.02em; }
+  .g-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .g-option {
+    display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 8px 10px;
+    border: var(--xfe-bw) solid rgba(31,42,91,.22); border-radius: 14px;
+    background: var(--xfe-paper); color: var(--xfe-ink);
+    font: 800 14px/1.35 var(--xfe-font-ui); text-align: left; cursor: pointer;
+  }
+  .g-option .letter { width: 26px; height: 26px; display: grid; place-items: center; flex: 0 0 auto; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 8px; background: var(--xfe-sun-soft); font-size: 10px; font-weight: 900; }
+  .g-option.is-correct { background: var(--xfe-success-soft); border-color: var(--xfe-success); }
+  .g-option.is-correct .letter { background: var(--xfe-mint); color: var(--xfe-ink); }
+  .g-option.is-wrong { background: var(--xfe-danger-soft); border-color: var(--xfe-danger); }
+  .g-option.is-wrong .letter { background: var(--xfe-coral); color: var(--xfe-on-coral); }
+  .g-feedback {
+    margin-top: 11px; padding: 12px 13px; border: var(--xfe-bw) solid var(--xfe-ink);
+    border-radius: 15px; background: var(--xfe-success-soft);
+  }
+  .g-feedback.is-bad { background: var(--xfe-danger-soft); }
+  .g-feedback b { display: flex; align-items: center; gap: 6px; color: var(--xfe-ink); font-size: 13px; font-weight: 900; }
+  .g-feedback p { margin: 6px 0 0; font-size: 11px; font-weight: 700; line-height: 1.65; }
+
+  .g-quest { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; gap: 8px; align-items: center; padding: 8px; border: var(--xfe-bw-thin) solid var(--xfe-line); border-radius: 12px; background: #fff; }
+  .g-quest .qi { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--xfe-line); border-radius: 10px; background: var(--xfe-sun-soft); font-size: 16px; }
+  .g-quest b { display: block; color: var(--xfe-ink); font-size: 11px; }
+  .g-quest small { display: block; margin-top: 2px; font-size: 9px; font-weight: 700; color: var(--xfe-ink-faint); }
+  .g-quest .qbar { height: 5px; margin-top: 5px; border-radius: 999px; overflow: hidden; background: rgba(31,42,91,.10); }
+  .g-quest .qbar i { display: block; width: 62%; height: 100%; background: var(--xfe-gradient, linear-gradient(90deg,var(--xfe-mint),#6be2d4)); }
+  .g-quest button { min-height: 26px; padding: 3px 8px; border: var(--xfe-bw-thin) solid var(--xfe-ink); border-radius: 8px; background: var(--xfe-sun); font-size: 9px; font-weight: 900; box-shadow: 0 2px 0 rgba(31,42,91,.20); }
+
+  .g-chat { display: flex; flex-direction: column; gap: 8px; padding: 13px; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 16px; background: var(--xfe-sea); }
+  .g-msg { display: flex; gap: 7px; align-items: flex-start; max-width: 88%; }
+  .g-msg.is-user { align-self: flex-end; flex-direction: row-reverse; }
+  .g-avatar { width: 26px; height: 26px; display: grid; place-items: center; border: var(--xfe-bw-thin) solid var(--xfe-ink); border-radius: 8px; background: var(--xfe-sun-soft); font-size: 13px; }
+  .g-bubble { padding: 8px 10px; border: var(--xfe-bw-thin) solid rgba(31,42,91,.22); border-radius: 4px 14px 14px 14px; background: var(--xfe-paper); color: var(--xfe-ink); font-size: 11px; font-weight: 700; line-height: 1.6; }
+  .g-msg.is-user .g-bubble { border-radius: 14px 4px 14px 14px; background: var(--xfe-sky-soft); }
+
+  .g-toast-demo { display: inline-flex; align-items: center; padding: 9px 14px; border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 12px; background: var(--xfe-sun-soft); box-shadow: var(--xfe-shadow-hard-sm); color: var(--xfe-ink); font-size: 10px; font-weight: 900; }
+  .g-empty { padding: 20px; text-align: center; }
+  .g-empty .emoji { display: block; margin-bottom: 4px; font-size: 38px; animation: xfe-bob 3.4s ease-in-out infinite; }
+  .g-empty b { display: block; color: var(--xfe-ink); font-size: 14px; }
+  .g-empty p { margin: 4px 0 10px; font-size: 11px; font-weight: 700; }
+
+  /* ===== Mascot ===== */
+  .g-mascot-stage {
+    position: relative; min-height: 270px; display: grid; place-items: center; overflow: hidden;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: var(--xfe-r-xl);
+    background: radial-gradient(circle at 50% 40%, var(--xfe-sky-soft), var(--xfe-sea-2));
+    box-shadow: var(--xfe-shadow-card);
+  }
+  .g-mascot-stage .blob {
+    position: absolute; width: 220px; height: 220px;
+    border-radius: 48% 52% 43% 57% / 45% 45% 55% 55%;
+    background: radial-gradient(circle at 32% 24%, #d9f8ff, #9ae6f4 46%, #65cbe1);
+    border: 2px dashed rgba(31,42,91,.35);
+    box-shadow: inset 0 -12px 0 rgba(31,42,91,.06);
+  }
+  .g-mascot-stage img { position: relative; z-index: 2; width: 230px; filter: drop-shadow(0 12px 10px rgba(31,42,91,.2)); animation: xfe-bob 4.4s ease-in-out infinite; }
+  .g-mascot-stage .speech { position: absolute; z-index: 4; right: 10px; top: 14px; max-width: 150px; }
+  .g-mascot-stage .accessory { position: absolute; z-index: 3; left: 57%; top: 12%; font-size: 34px; transform: translate(-50%, -50%); animation: xfe-wiggle 2.4s ease-in-out infinite; }
+  .g-rules { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .g-rule-item { padding: 11px; border: var(--xfe-bw-thin) solid var(--xfe-line); border-radius: 11px; background: #fff; }
+  .g-rule-item b { display: block; color: var(--xfe-ink); font-size: 11px; }
+  .g-rule-item p { margin: 3px 0 0; font-size: 10px; font-weight: 700; line-height: 1.55; }
+
+  /* ===== Motion ===== */
+  .g-motion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+  .g-motion {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: 14px 9px; border: var(--xfe-bw-thin) solid var(--xfe-line); border-radius: 12px;
+    background: #fff; text-align: center;
+  }
+  .g-motion .dot { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 11px; border: var(--xfe-bw) solid var(--xfe-ink); background: var(--xfe-sun); font-size: 15px; }
+  .g-motion b { color: var(--xfe-ink); font-size: 10px; }
+  .g-motion small { font-size: 8px; font-weight: 700; color: var(--xfe-ink-faint); }
+
+  /* ===== Table / Do-Don't ===== */
+  .g-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .g-table th, .g-table td { padding: 8px 9px; border-bottom: 1px dashed var(--xfe-line); text-align: left; vertical-align: top; }
+  .g-table th { color: var(--xfe-ink-faint); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+  .g-table td { font-weight: 700; }
+  .g-table td b { color: var(--xfe-ink); }
+  .g-do, .g-dont { padding: 12px; border-radius: 12px; border: var(--xfe-bw-thin) solid var(--xfe-line); }
+  .g-do { background: var(--xfe-success-soft); }
+  .g-dont { background: var(--xfe-danger-soft); }
+  .g-do b, .g-dont b { display: block; margin-bottom: 5px; color: var(--xfe-ink); font-size: 11px; }
+  .g-do p, .g-dont p { margin: 0; font-size: 10px; font-weight: 700; line-height: 1.6; }
+
+  /* ===== Data ===== */
+  .g-chart { padding: 15px; border: var(--xfe-bw-thin) solid var(--xfe-line); border-radius: 13px; background: #fff; }
+  .g-bars { display: flex; align-items: flex-end; justify-content: space-between; gap: 7px; height: 120px; padding-top: 14px; }
+  .g-bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px; height: 100%; }
+  .g-bar i { display: block; width: 100%; max-width: 24px; min-height: 4px; border: 1.5px solid var(--xfe-ink); border-bottom: 0; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, var(--xfe-sky), var(--xfe-mint)); }
+  .g-bar.is-today i { background: linear-gradient(180deg, var(--xfe-sun), var(--xfe-coral)); }
+  .g-bar small { font-size: 8px; font-weight: 800; color: var(--xfe-ink-faint); }
+  .g-subbar { margin-top: 8px; }
+  .g-subbar .top { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 9px; font-weight: 800; color: var(--xfe-ink-soft); }
+  .g-subbar .track { height: 8px; overflow: hidden; border: 1px solid rgba(31,42,91,.12); border-radius: 999px; background: rgba(31,42,91,.06); }
+  .g-subbar .track i { display: block; height: 100%; width: var(--p); background: var(--c); }
+
+  /* ===== Code ===== */
+  .g-code {
+    overflow-x: auto; margin: 10px 0 0; padding: 14px;
+    border: var(--xfe-bw) solid var(--xfe-ink); border-radius: 13px;
+    background: var(--xfe-navy); color: #e9f5ff;
+    font: 10px/1.75 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    box-shadow: var(--xfe-shadow-hard-sm);
+  }
+  .g-code .c { color: #8fe3d8; }
+  .g-code .v { color: #ffd23f; }
+
+  /* ===== Checklist ===== */
+  .g-check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
+  .g-check { display: flex; gap: 7px; align-items: flex-start; font-size: 10px; font-weight: 700; line-height: 1.5; }
+  .g-check::before {
+    content: ""; width: 14px; height: 14px; flex: 0 0 auto; margin-top: 1px;
+    border: var(--xfe-bw-thin) solid var(--xfe-ink); border-radius: 4px; background: var(--xfe-paper);
+  }
+
+  /* ===== Footer ===== */
+  .g-footer { margin-top: 54px; padding: 18px 4px 0; border-top: 2px dashed var(--xfe-line); font-size: 10px; font-weight: 700; color: var(--xfe-ink-faint); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 1040px) {
+    .g-hero { grid-template-columns: 1fr; padding: 34px 28px; }
+    .g-hero-art { min-height: 260px; margin-top: -10px; }
+    .g-hero p { max-width: 680px; }
+    .g-shell { grid-template-columns: 1fr; }
+    .g-toc { position: static; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px 4px; }
+    .g-toc b { grid-column: 1 / -1; }
+    .g-toc a { grid-template-columns: 18px 1fr; font-size: 9px; }
+    .g-grid4, .g-radius-grid, .g-shadow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    .g-wrap { padding: 14px 12px 60px; }
+    .g-hero { padding: 26px 18px; border-radius: 24px; }
+    .g-hero h1 { font-size: 38px; }
+    .g-hero-art { min-height: 210px; }
+    .g-blob { width: 210px; height: 210px; }
+    .g-hero-art img { width: 220px; }
+    .g-hero-speech { right: 0; top: -2px; max-width: 135px; font-size: 9px; }
+    .g-toc { grid-template-columns: 1fr 1fr; }
+    .g-sec { margin-top: 40px; }
+    .g-sechead h2 { font-size: 21px; }
+    .g-panel { padding: 16px; border-radius: 18px; }
+    .g-grid2, .g-grid3, .g-grid4, .g-subjects, .g-options, .g-modes, .g-rules, .g-motion-grid, .g-check-grid { grid-template-columns: 1fr; }
+    .g-type-row { grid-template-columns: 92px minmax(0, 1fr); }
+    .g-type-row .spec { grid-column: 2; text-align: left; }
+    .g-sample-hero { font-size: 30px; }
+    .g-appmap { grid-template-columns: 58px 1fr; }
+    .g-zone.side { display: none; }
+    .g-formula { font-size: 8px; }
+    .g-footer { display: block; line-height: 1.7; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="g-wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="g-hero">
+    <div>
+      <span class="g-badge"><i></i>DeepSeek Harness · Plugin Design Language</span>
+      <h1>海底糖果<br><span class="hl">设计语言</span></h1>
+      <p>
+        把学习舱做成一张有生命的<strong>海底贴纸手账</strong>：奶油纸、深海蓝、糖果色积木，再加一条会陪你闯关的蓝色大肥鱼。
+        <b>活泼，但有秩序；鼓励，但不施压。</b>
+      </p>
+      <div class="g-meta">
+        <span>🐟 小肥鱼学习平台</span>
+        <span>🧭 左侧嵌入 + 右下浮层</span>
+        <span>🪸 v1.2 · 2026-11</span>
+      </div>
+    </div>
+    <div class="g-hero-art" aria-hidden="true">
+      <div class="g-blob"></div>
+      <img src="../assets/cute-t.png" alt="">
+      <div class="g-hero-speech">今天的海风刚刚好，<br>适合学一点点新东西。</div>
+      <span class="g-version">v1.2</span>
+    </div>
+  </header>
+
+  <div class="g-shell">
+    <!-- ================= TOC ================= -->
+    <nav class="g-toc" aria-label="设计语言目录">
+      <b>目录 / CONTENTS</b>
+      <a href="#position"><span>01</span>设计定位</a>
+      <a href="#motif"><span>02</span>视觉母题</a>
+      <a href="#color"><span>03</span>色彩架构</a>
+      <a href="#subjects"><span>04</span>学科与状态</a>
+      <a href="#type"><span>05</span>字体排版</a>
+      <a href="#space"><span>06</span>间距与阴影</a>
+      <a href="#layout"><span>07</span>布局</a>
+      <a href="#components"><span>08</span>核心组件</a>
+      <a href="#mascot"><span>09</span>角色系统</a>
+      <a href="#motion"><span>10</span>动效</a>
+      <a href="#voice"><span>11</span>文案语气</a>
+      <a href="#data"><span>12</span>数据可视化</a>
+      <a href="#a11y"><span>13</span>无障碍</a>
+      <a href="#checklist"><span>14</span>还原清单</a>
+      <a href="#tokens"><span>15</span>Token 用法</a>
+    </nav>
+
+    <main>
+      <!-- ================= 01 POSITION ================= -->
+      <section class="g-sec" id="position">
+        <div class="g-sechead"><div class="no">01</div><h2>设计定位</h2><span class="hint">先敢点，再学会</span></div>
+        <div class="g-panel">
+          <p class="g-lead">
+            小肥鱼学习平台不是“把成人学习看板变可爱”。它更像孩子课桌抽屉里那本<b>贴满贴纸的练习册</b>：
+            打开时有颜色、有角色、有声音；真正学习时，题目和进度又足够清楚，不抢戏。
+          </p>
+          <div class="g-grid3">
+            <div class="g-principle" style="--ic:var(--xfe-sun)"><div class="ic">👆</div><b>先敢点</b><p>2px 墨线 + 4px 实色投影 + 明确的按压缩放，让孩子一眼知道哪里能点。</p></div>
+            <div class="g-principle" style="--ic:var(--xfe-sky)"><div class="ic">🐟</div><b>一条鱼带路</b><p>小肥鱼是同桌和向导，每屏只主露出一次；其余用气泡、星星、贴纸补情绪。</p></div>
+            <div class="g-principle" style="--ic:var(--xfe-mint)"><div class="ic">🪙</div><b>进步看得见</b><p>答对立刻有 XP、金币、连击和一句具体夸奖；不排名、不扣光、不羞辱。</p></div>
+          </div>
+          <div class="g-note" style="margin-top:12px"><b>一句话配方：</b>奶油纸 62% + 深海蓝 22% + 糖果色 16% + 一条大肥鱼 + 2px 墨线 / 4–5px 硬投影。</div>
+        </div>
+      </section>
+
+      <!-- ================= 02 MOTIF ================= -->
+      <section class="g-sec" id="motif">
+        <div class="g-sechead"><div class="no">02</div><h2>视觉母题</h2><span class="hint">三种材质，一套签名</span></div>
+        <div class="g-panel">
+          <div class="g-grid3">
+            <div class="g-material" style="--m-bg:var(--xfe-cream);--m-swatch:linear-gradient(135deg,#fffdf7,#ffe7c9)">
+              <div class="swatch"></div><b>奶油纸</b><small>#FFF8E6 · 学习舱底 / 阅读区</small>
+            </div>
+            <div class="g-material" style="--m-bg:var(--xfe-navy);--m-swatch:linear-gradient(135deg,#24336e,#172047)">
+              <div class="swatch"></div><b style="color:#fff">深海蓝</b><small style="color:#cfe8ff">#1B2550 · 导航 / 遮罩 / 秩序</small>
+            </div>
+            <div class="g-material" style="--m-bg:var(--xfe-sun-soft);--m-swatch:conic-gradient(from 40deg,#ff6f61,#ffd23f,#20c8b8,#7bdff2,#b9a7ff,#ffb7d5,#ff6f61)">
+              <div class="swatch"></div><b>糖果贴纸</b><small>小面积积木 · CTA / 图标 / 徽章</small>
+            </div>
+          </div>
+          <div class="g-grid2" style="margin-top:12px">
+            <div class="g-panel" style="box-shadow:var(--xfe-shadow-card);padding:15px">
+              <span class="g-label">签名配方 · Do</span>
+              <div class="xfe-card" style="padding:13px;border-radius:18px;box-shadow:var(--xfe-shadow-hard-sm)">
+                <b style="color:var(--xfe-ink);font-size:13px">2px 墨线 + 奶油纸 + 实色投影</b>
+                <p class="g-small" style="margin:4px 0 0">看起来像可以拿起来、按下去的小积木。</p>
+              </div>
+            </div>
+            <div class="g-panel" style="padding:15px;background:var(--xfe-danger-soft)">
+              <span class="g-label" style="color:var(--xfe-danger-ink)">反例 · Don't</span>
+              <div style="padding:13px;border:1px solid #f1d9d5;border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(80,40,40,.12)">
+                <b style="color:#7b433d;font-size:13px">1px 浅灰线 + 大模糊阴影</b>
+                <p class="g-small" style="margin:4px 0 0;color:#9b6b66">立刻变成“通用后台”，孩子的房间感消失。</p>
+              </div>
+            </div>
+          </div>
+          <div class="g-formula" style="margin-top:14px" aria-label="视觉面积配比">
+            <span class="f1">奶油纸 62%</span><span class="f2">深海蓝 22%</span><span class="f3">糖果 16%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 03 COLOR ================= -->
+      <section class="g-sec" id="color">
+        <div class="g-sechead"><div class="no">03</div><h2>色彩架构</h2><span class="hint">从安静到活泼，四层各司其职</span></div>
+        <div class="g-panel">
+          <div class="g-layers">
+            <div class="g-layer">
+              <div class="tag">L0 纸</div><div><b>奶油纸 · 结构层</b><br><small>底、卡、墨线、字号、间距。永远不参与“活泼”。</small></div>
+              <div class="dots"><i style="--c:#fff8e6"></i><i style="--c:#fffdf7"></i><i style="--c:#1f2a5b"></i></div>
+            </div>
+            <div class="g-layer">
+              <div class="tag">L1 海</div><div><b>深海骨架</b><br><small>导航、遮罩、最深文字。让糖果色有地方发光。</small></div>
+              <div class="dots"><i style="--c:#1b2550"></i><i style="--c:#24336e"></i><i style="--c:#172047"></i></div>
+            </div>
+            <div class="g-layer">
+              <div class="tag">L2 糖</div><div><b>糖果强调</b><br><small>珊瑚 CTA、鹅黄奖励、薄荷成长、天蓝提示、丁香混合。</small></div>
+              <div class="dots"><i style="--c:#ff6f61"></i><i style="--c:#ffd23f"></i><i style="--c:#20c8b8"></i><i style="--c:#7bdff2"></i><i style="--c:#b9a7ff"></i></div>
+            </div>
+            <div class="g-layer">
+              <div class="tag">L3 信号</div><div><b>状态语义</b><br><small>正确 / 注意 / 错误 / 提示。只做信号，不做装饰。</small></div>
+              <div class="dots"><i style="--c:#0b8f81"></i><i style="--c:#c69b19"></i><i style="--c:#d94b40"></i><i style="--c:#3d6fd8"></i></div>
+            </div>
+          </div>
+          <div class="g-swatches" style="margin-top:14px">
+            <div class="g-sw"><i style="--c:#1f2a5b"></i><div><b>墨蓝</b><small>#1F2A5B</small><code>--xfe-ink</code></div></div>
+            <div class="g-sw"><i style="--c:#fff8e6"></i><div><b>奶油纸</b><small>#FFF8E6</small><code>--xfe-cream</code></div></div>
+            <div class="g-sw"><i style="--c:#fffdf7"></i><div><b>纸白</b><small>#FFFDF7</small><code>--xfe-paper</code></div></div>
+            <div class="g-sw"><i style="--c:#1b2550"></i><div><b>深海蓝</b><small>#1B2550</small><code>--xfe-navy</code></div></div>
+            <div class="g-sw"><i style="--c:#ff6f61"></i><div><b>珊瑚</b><small>#FF6F61</small><code>--xfe-coral</code></div></div>
+            <div class="g-sw"><i style="--c:#ffd23f"></i><div><b>鹅黄</b><small>#FFD23F</small><code>--xfe-sun</code></div></div>
+            <div class="g-sw"><i style="--c:#20c8b8"></i><div><b>薄荷</b><small>#20C8B8</small><code>--xfe-mint</code></div></div>
+            <div class="g-sw"><i style="--c:#7bdff2"></i><div><b>天蓝</b><small>#7BDDF2</small><code>--xfe-sky</code></div></div>
+            <div class="g-sw"><i style="--c:#b9a7ff"></i><div><b>丁香</b><small>#B9A7FF</small><code>--xfe-lilac</code></div></div>
+            <div class="g-sw"><i style="--c:#ffb7d5"></i><div><b>糖果粉</b><small>#FFB7D5</small><code>--xfe-pink</code></div></div>
+          </div>
+          <div class="g-note" style="margin-top:12px"><b>珊瑚小字规则：</b>亮珊瑚上的 13px 小字用墨蓝 <code>--xfe-on-coral</code>（6.3:1），不要用纯白；需要白字时改用深珊瑚 <code>--xfe-coral-deep</code>。</div>
+        </div>
+      </section>
+
+      <!-- ================= 04 SUBJECTS ================= -->
+      <section class="g-sec" id="subjects">
+        <div class="g-sechead"><div class="no">04</div><h2>学科与状态</h2><span class="hint">颜色 + 图标 + 文字，三重编码</span></div>
+        <div class="g-panel">
+          <div class="g-subjects">
+            <div class="g-subject" style="--c:var(--xfe-math);--soft:var(--xfe-math-soft)">
+              <div class="top"><div class="tile">🧮</div><div><b>数学</b><small>数字海里冲浪</small></div></div>
+              <div class="track"><i style="--p:72%"></i></div><div class="num"><span>正确率 72%</span><span>12 题</span></div>
+            </div>
+            <div class="g-subject" style="--c:var(--xfe-chinese);--soft:var(--xfe-chinese-soft)">
+              <div class="top"><div class="tile">📖</div><div><b>语文</b><small>汉字贝壳寻宝</small></div></div>
+              <div class="track"><i style="--p:86%"></i></div><div class="num"><span>正确率 86%</span><span>8 题</span></div>
+            </div>
+            <div class="g-subject" style="--c:var(--xfe-english);--soft:var(--xfe-english-soft)">
+              <div class="top"><div class="tile">🔤</div><div><b>英语</b><small>单词珊瑚礁</small></div></div>
+              <div class="track"><i style="--p:64%"></i></div><div class="num"><span>正确率 64%</span><span>9 题</span></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+            <span class="g-status" style="--soft:var(--xfe-success-soft);--inkc:var(--xfe-success-ink)">✅ 答对啦</span>
+            <span class="g-status" style="--soft:var(--xfe-warning-soft);--inkc:var(--xfe-warning-ink)">◷ 待复习</span>
+            <span class="g-status" style="--soft:var(--xfe-danger-soft);--inkc:var(--xfe-danger-ink)">💧 差一点点</span>
+            <span class="g-status" style="--soft:var(--xfe-info-soft);--inkc:var(--xfe-info-ink)">💡 小提示</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 05 TYPE ================= -->
+      <section class="g-sec" id="type">
+        <div class="g-sechead"><div class="no">05</div><h2>字体与排版</h2><span class="hint">圆、厚、短；不细、不飘</span></div>
+        <div class="g-panel">
+          <div class="g-type-row">
+            <div class="meta"><b>Hero</b>clamp 26–42px</div>
+            <div class="g-sample-hero">把不会的，变成会的！</div>
+            <div class="spec">900 / 1.02<br>letter-spacing -.04em</div>
+          </div>
+          <div class="g-type-row">
+            <div class="meta"><b>Page H1</b>clamp 24–34px</div>
+            <div class="g-sample-page">闯关岛</div>
+            <div class="spec">900 / 1.08</div>
+          </div>
+          <div class="g-type-row">
+            <div class="meta"><b>Question</b>clamp 21–30px</div>
+            <div class="g-sample-question">一个长方形长 8 厘米，宽 3 厘米。周长是多少厘米？</div>
+            <div class="spec">900 / 1.42</div>
+          </div>
+          <div class="g-type-row">
+            <div class="meta"><b>Body</b>14px</div>
+            <div class="g-sample-body">先算个位，再算十位，满十进一。答错也没关系，小肥鱼陪你再看一遍。</div>
+            <div class="spec">700 / 1.6</div>
+          </div>
+          <div class="g-type-row">
+            <div class="meta"><b>Small</b>12px</div>
+            <div class="g-sample-sm">每天 3 分钟，攒金币喂小肥鱼。</div>
+            <div class="spec">700 / 1.5</div>
+          </div>
+          <div class="g-type-row">
+            <div class="meta"><b>Caption</b>10px</div>
+            <div class="g-sample-cap">今日份的海底冒险</div>
+            <div class="spec">900 / .14em</div>
+          </div>
+          <div class="g-note" style="margin-top:12px"><b>排版底线：</b>题干 ≥21px，选项 ≥15px，主阅读文本 ≥14px；正文每行 22–30 个汉字。10px 只做极短标签，不写句子。</div>
+        </div>
+      </section>
+
+      <!-- ================= 06 SPACE ================= -->
+      <section class="g-sec" id="space">
+        <div class="g-sechead"><div class="no">06</div><h2>间距、圆角、描边与阴影</h2><span class="hint">硬投影是可按下的承诺</span></div>
+        <div class="g-panel">
+          <div class="g-grid2">
+            <div>
+              <span class="g-label">4px 基准间距</span>
+              <div class="g-space">
+                <div class="g-space-row"><span>sp-1</span><i style="width:4px"></i><span>4px</span></div>
+                <div class="g-space-row"><span>sp-3</span><i style="width:8px"></i><span>8px</span></div>
+                <div class="g-space-row"><span>sp-5</span><i style="width:12px"></i><span>12px</span></div>
+                <div class="g-space-row"><span>sp-7</span><i style="width:16px"></i><span>16px</span></div>
+                <div class="g-space-row"><span>sp-9</span><i style="width:20px"></i><span>20px</span></div>
+                <div class="g-space-row"><span>sp-10</span><i style="width:24px"></i><span>24px</span></div>
+                <div class="g-space-row"><span>sp-12</span><i style="width:32px"></i><span>32px</span></div>
+              </div>
+            </div>
+            <div>
+              <span class="g-label">圆角只保留 7 档</span>
+              <div class="g-radius-grid" style="grid-template-columns:repeat(3,1fr)">
+                <div class="g-radius"><div class="box" style="--r:10px"></div><b>10</b><small>mini</small></div>
+                <div class="g-radius"><div class="box" style="--r:14px"></div><b>14</b><small>button</small></div>
+                <div class="g-radius"><div class="box" style="--r:18px"></div><b>18</b><small>nav</small></div>
+                <div class="g-radius"><div class="box" style="--r:23px"></div><b>23</b><small>card</small></div>
+                <div class="g-radius"><div class="box" style="--r:26px"></div><b>26</b><small>large</small></div>
+                <div class="g-radius"><div class="box" style="--r:34px"></div><b>34</b><small>shell</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="g-shadow-grid" style="margin-top:12px">
+            <div class="g-shadow"><div class="box" style="--sh:var(--xfe-shadow-hard-xs)"></div><b>hard-xs</b><small>2px</small></div>
+            <div class="g-shadow"><div class="box" style="--sh:var(--xfe-shadow-hard-sm)"></div><b>hard-sm</b><small>3px</small></div>
+            <div class="g-shadow"><div class="box" style="--sh:var(--xfe-shadow-button)"></div><b>button</b><small>4px</small></div>
+            <div class="g-shadow"><div class="box" style="--sh:var(--xfe-shadow-card)"></div><b>card</b><small>5px</small></div>
+          </div>
+          <div class="g-note" style="margin-top:12px"><b>按压物理：</b>hover 上移 2px / 投影 +2px；active 下移 2px / 投影 −2px。投影消失而组件还在动，是禁止的。</div>
+        </div>
+      </section>
+
+      <!-- ================= 07 LAYOUT ================= -->
+      <section class="g-sec" id="layout">
+        <div class="g-sechead"><div class="no">07</div><h2>布局</h2><span class="hint">一个学习舱，两种入口</span></div>
+        <div class="g-panel">
+          <div class="g-appmap" aria-label="学习舱三栏布局示意">
+            <div class="g-zone rail"><div>🐟</div><div>导航</div><small>98px</small></div>
+            <div class="g-zone main"><div>主内容</div><small>标题 / 卡片 / 题目 / 报告</small></div>
+            <div class="g-zone side"><div>🐳</div><div>小肥鱼侧栏</div><small>302px</small></div>
+          </div>
+          <div class="g-breakpoints">
+            <span>≤1120px 隐藏侧栏</span><span>≤920px 单列</span><span>≤760px 底部导航</span><span>container ≤1000px 嵌入侧栏收起</span><span>container ≤700px Hero 单列</span>
+          </div>
+          <div class="g-modes" style="margin-top:12px">
+            <div class="g-mode">
+              <b>左侧「小肥鱼学堂」</b>
+              <p>嵌进主内容区，没有遮罩；右上角 ↩ 返回对话。适合连续学习。</p>
+              <div class="mini" aria-hidden="true"><i></i><i></i><i></i></div>
+            </div>
+            <div class="g-mode is-pop">
+              <b>右下角快捷浮层</b>
+              <p>深蓝遮罩 + 模糊；右上角 ✕ / Esc 关闭。适合从聊天里快速看一眼。</p>
+              <div class="mini" aria-hidden="true"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 08 COMPONENTS ================= -->
+      <section class="g-sec" id="components">
+        <div class="g-sechead"><div class="no">08</div><h2>核心组件</h2><span class="hint">每一块都能拿起来按一下</span></div>
+        <div class="g-panel">
+          <span class="g-label">按钮 / 胶囊</span>
+          <div class="g-btnrow">
+            <button class="xfe-btn is-primary" type="button">🚀 开始今天的闯关</button>
+            <button class="xfe-btn is-sun" type="button">🪙 领取奖励</button>
+            <button class="xfe-btn is-mint" type="button">🧹 去错题礁</button>
+            <button class="xfe-btn is-ghost" type="button">问问小肥鱼</button>
+            <button class="xfe-btn is-sm" type="button">小按钮</button>
+          </div>
+          <div class="g-btnrow" style="margin-top:10px">
+            <span class="xfe-chip is-coral">🔥 3 连续</span>
+            <span class="xfe-chip is-sun">🪙 60</span>
+            <span class="xfe-chip is-mint">⭐ Lv.1</span>
+            <span class="xfe-chip is-sky">📚 三年级</span>
+            <span class="xfe-chip is-lilac">🌈 混合</span>
+          </div>
+
+          <span class="g-label" style="margin-top:16px">卡片 / 进度</span>
+          <div class="xfe-card g-card-demo">
+            <div class="g-card-icon">🧮</div>
+            <div><b>数学 · 数字海里冲浪</b><small>今天还差 3 题就完成每日任务。</small></div>
+            <div class="num">72%</div>
+          </div>
+          <div class="g-progress-row"><span>经验</span><div class="xfe-progress"><span style="width:68%"></span></div><span>68/120</span></div>
+          <div class="g-progress-row"><span>饱饱度</span><div class="xfe-progress is-hunger"><span style="width:70%"></span></div><span>70%</span></div>
+
+          <span class="g-label" style="margin-top:16px">闯关选项 / 反馈</span>
+          <div class="g-question xfe-card">
+            <div class="qtag"><span class="xfe-chip is-sun" style="min-height:26px;font-size:9px">数学 · 三年级</span><span class="xfe-chip" style="min-height:26px;font-size:9px">第 1 题</span></div>
+            <h4>圆的半径是 4 厘米，面积是多少平方厘米？（π 取 3.14）</h4>
+            <div class="g-options">
+              <button class="g-option" type="button"><span class="letter">A</span>25.12</button>
+              <button class="g-option is-correct" type="button"><span class="letter">B</span>50.24</button>
+              <button class="g-option" type="button"><span class="letter">C</span>12.56</button>
+              <button class="g-option" type="button"><span class="letter">D</span>47.1</button>
+            </div>
+            <div class="g-feedback">
+              <b>✅ 答对啦！ <span style="margin-left:auto;font-size:9px;color:var(--xfe-success-ink)">+10 XP · +2 🪙</span></b>
+              <p>圆的面积 = π × 半径 × 半径 = 3.14 × 4 × 4 = 50.24（平方厘米）。</p>
+            </div>
+          </div>
+
+          <div class="g-grid2" style="margin-top:12px">
+            <div>
+              <span class="g-label">每日任务</span>
+              <div class="g-quest">
+                <div class="qi">✅</div>
+                <div><b>答对 8 道题</b><small>每答对一题都算</small><div class="qbar"><i></i></div></div>
+                <button type="button">5/8</button>
+              </div>
+            </div>
+            <div>
+              <span class="g-label">Toast / 空态</span>
+              <div class="g-toast-demo">✅ 设置保存啦</div>
+              <div class="g-empty" style="margin-top:8px">
+                <span class="emoji">🐣</span><b>错题礁空空的</b><p>去闯关岛捡几道题吧！</p>
+                <button class="xfe-btn is-primary is-sm" type="button">🏝️ 去闯关</button>
+              </div>
+            </div>
+          </div>
+
+          <span class="g-label" style="margin-top:16px">对话</span>
+          <div class="g-chat">
+            <div class="g-msg"><div class="g-avatar">🐟</div><div class="g-bubble">咕噜咕噜～我是小肥鱼助教。今天想先学哪一科？</div></div>
+            <div class="g-msg is-user"><div class="g-avatar">🧒</div><div class="g-bubble">3/4 + 1/4 等于多少？</div></div>
+            <div class="g-msg"><div class="g-avatar">🐟</div><div class="g-bubble">答案：1。<br>同分母分数相加，分母不变，分子相加：3/4 + 1/4 = 4/4 = 1。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 09 MASCOT ================= -->
+      <section class="g-sec" id="mascot">
+        <div class="g-sechead"><div class="no">09</div><h2>角色系统</h2><span class="hint">一条鱼带路，不是贴满每条缝</span></div>
+        <div class="g-grid2">
+          <div class="g-mascot-stage">
+            <div class="blob"></div>
+            <img src="../assets/cute-t.png" alt="小肥鱼">
+            <div class="speech xfe-speech">今天的海风刚刚好，<br>适合学一点点新东西。</div>
+            <span class="accessory" aria-hidden="true">🎀</span>
+          </div>
+          <div class="g-panel" style="padding:16px">
+            <b style="color:var(--xfe-ink);font-size:14px">小肥鱼使用规则</b>
+            <p class="g-small" style="margin:5px 0 10px">主图用透明 <code>cute-t.png</code>；每屏只主露出一次；情绪贴纸只做标点。</p>
+            <div class="g-rules">
+              <div class="g-rule-item"><b>尺寸</b><p>启动器 84 / Hero 190–230 / 侧栏 190 / 成绩 150</p></div>
+              <div class="g-rule-item"><b>光斑</b><p>不规则圆角 48/52/43/57%，2px 虚线，5.2s 浮动</p></div>
+              <div class="g-rule-item"><b>情绪</b><p>🎉 开心 / 💦 慌张；不用带烘焙文字的常驻图</p></div>
+              <div class="g-rule-item"><b>兜底</b><p>加载失败显示内联 SVG 小鱼，不留空</p></div>
+            </div>
+            <div class="g-note" style="margin-top:10px"><b>不要：</b>拉伸、裁脸、改色、把角色压在按钮/题干上、每张卡都放一只。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10 MOTION ================= -->
+      <section class="g-sec" id="motion">
+        <div class="g-sechead"><div class="no">10</div><h2>动效</h2><span class="hint">只让一处呼吸</span></div>
+        <div class="g-panel">
+          <div class="g-motion-grid">
+            <div class="g-motion"><div class="dot xfe-animate-float">🐟</div><b>常驻浮动</b><small>4.2–5.2s · ease-in-out</small></div>
+            <div class="g-motion"><div class="dot xfe-animate-bob">🫧</div><b>呼吸</b><small>4.4s · 每屏 ≤1 处</small></div>
+            <div class="g-motion"><div class="dot xfe-animate-wiggle">⭐</div><b>贴纸摇摆</b><small>2.4s · 只给装饰</small></div>
+            <div class="g-motion"><div class="dot">👆</div><b>按压</b><small>140ms · 位移 4px</small></div>
+            <div class="g-motion"><div class="dot">🎉</div><b>庆祝</b><small>2.6s · 不阻塞</small></div>
+            <div class="g-motion"><div class="dot">💤</div><b>减少动效</b><small>prefers-reduced-motion</small></div>
+          </div>
+          <div class="g-note" style="margin-top:12px">同时运动元素 ≤3 个；常驻动画每屏 ≤1 处；彩带 34 片、2.6s，结束即停。</div>
+        </div>
+      </section>
+
+      <!-- ================= 11 VOICE ================= -->
+      <section class="g-sec" id="voice">
+        <div class="g-sechead"><div class="no">11</div><h2>文案语气</h2><span class="hint">短、具体、不羞辱</span></div>
+        <div class="g-panel">
+          <table class="g-table">
+            <thead><tr><th>场景</th><th>不说</th><th>要说</th></tr></thead>
+            <tbody>
+              <tr><td>答错</td><td>又错了，太粗心</td><td><b>差一点点！小肥鱼陪你再看一遍。</b></td></tr>
+              <tr><td>错题</td><td>错题记录</td><td><b>错题礁的贝壳</b></td></tr>
+              <tr><td>中断</td><td>前功尽弃</td><td><b>中断了 1 天，今天继续就好。</b></td></tr>
+              <tr><td>对比</td><td>你落后 78% 的同学</td><td><b>你已经超过了自己的上周。</b></td></tr>
+              <tr><td>数据</td><td>正确率仅 42%，很差</td><td><b>42% 已掌握，还有 8 个知识点可以突破。</b></td></tr>
+            </tbody>
+          </table>
+          <div class="g-grid2" style="margin-top:12px">
+            <div class="g-do"><b>✅ 可以这样说</b><p>“哇！这题被你一口吞掉啦！”<br>“咕噜～错题也是宝藏。”<br>“专注完成，奖励已入账。”</p></div>
+            <div class="g-dont"><b>⛔ 不要说</b><p>“你怎么又错了？”<br>“别人都会，就你不会。”<br>“连签断了，前功尽弃。”</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 12 DATA ================= -->
+      <section class="g-sec" id="data">
+        <div class="g-sechead"><div class="no">12</div><h2>数据可视化</h2><span class="hint">看见自己，不审判自己</span></div>
+        <div class="g-panel">
+          <div class="g-grid2">
+            <div class="g-chart">
+              <span class="g-label">最近 7 天 · 答题数</span>
+              <div class="g-bars">
+                <div class="g-bar"><i style="height:42%"></i><small>一</small></div>
+                <div class="g-bar"><i style="height:58%"></i><small>二</small></div>
+                <div class="g-bar"><i style="height:35%"></i><small>三</small></div>
+                <div class="g-bar"><i style="height:72%"></i><small>四</small></div>
+                <div class="g-bar"><i style="height:48%"></i><small>五</small></div>
+                <div class="g-bar"><i style="height:64%"></i><small>六</small></div>
+                <div class="g-bar is-today"><i style="height:88%"></i><small>日</small></div>
+              </div>
+              <p class="g-small" style="margin:7px 0 0">从 0 开始，直接标注；今天用鹅黄→珊瑚高亮。</p>
+            </div>
+            <div class="g-chart">
+              <span class="g-label">学科正确率</span>
+              <div class="g-subbar"><div class="top"><span>🧮 数学</span><span>72% · 12 题</span></div><div class="track"><i style="--p:72%;--c:var(--xfe-math)"></i></div></div>
+              <div class="g-subbar"><div class="top"><span>📖 语文</span><span>86% · 8 题</span></div><div class="track"><i style="--p:86%;--c:var(--xfe-chinese)"></i></div></div>
+              <div class="g-subbar"><div class="top"><span>🔤 英语</span><span>64% · 9 题</span></div><div class="track"><i style="--p:64%;--c:var(--xfe-english)"></i></div></div>
+              <div class="g-note" style="margin-top:10px">不用雷达图、饼图、3D、双轴；颜色之外必须有数字与文字。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 13 A11Y ================= -->
+      <section class="g-sec" id="a11y">
+        <div class="g-sechead"><div class="no">13</div><h2>无障碍与未成年人保护</h2><span class="hint">每个孩子都能看清、点到、读懂</span></div>
+        <div class="g-panel">
+          <div class="g-grid2">
+            <div>
+              <span class="g-label">基线</span>
+              <div class="g-check-grid" style="grid-template-columns:1fr">
+                <div class="g-check">正文 ≥4.5:1；标题 ≥3:1；UI 描边 ≥3:1</div>
+                <div class="g-check">触控 ≥44px，儿童主按钮建议 48px</div>
+                <div class="g-check">图标按钮必须有 aria-label / title</div>
+                <div class="g-check">弹层 role=dialog、Esc 关闭、关闭按钮聚焦</div>
+                <div class="g-check">颜色 + 图标 + 文字三重编码</div>
+                <div class="g-check">prefers-reduced-motion 关闭无限动画</div>
+              </div>
+            </div>
+            <div>
+              <span class="g-label">保护</span>
+              <div class="g-check-grid" style="grid-template-columns:1fr">
+                <div class="g-check">不排名、不横向比较、不公开姓名/头像</div>
+                <div class="g-check">不做断签惩罚、不清零、不恐吓倒计时</div>
+                <div class="g-check">数据只存本机 localStorage，不联网</div>
+                <div class="g-check">默认不调用模型；拍照识题需主动点击，调用一次</div>
+                <div class="g-check">夜间不推送；家长可重置进度、关音效</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 14 CHECKLIST ================= -->
+      <section class="g-sec" id="checklist">
+        <div class="g-sechead"><div class="no">14</div><h2>还原检查清单</h2><span class="hint">交付前逐项打勾</span></div>
+        <div class="g-panel">
+          <div class="g-check-grid">
+            <div class="g-check">奶油底不是纯白/冷灰，墨线是 2px 墨蓝</div>
+            <div class="g-check">珊瑚实色 ≤10%，每屏 1 个主 CTA</div>
+            <div class="g-check">高饱和糖果色 ≤4 种/屏</div>
+            <div class="g-check">学科色只出现在图标砖/浅底/小色条</div>
+            <div class="g-check">状态色没有被拿去做装饰</div>
+            <div class="g-check">学习舱 98 / auto / 302 三栏</div>
+            <div class="g-check">卡片 2px 墨线 + 23px 圆角 + 5px 投影</div>
+            <div class="g-check">卡片最后一行不贴底</div>
+            <div class="g-check">窄容器隐藏侧栏，移动端底栏 6 项</div>
+            <div class="g-check">嵌入式面板用 container query</div>
+            <div class="g-check">启动器在嵌入面板打开时隐藏</div>
+            <div class="g-check">标题 900 / 正文 700，不用细字</div>
+            <div class="g-check">题干 ≥21px，选项 ≥15px</div>
+            <div class="g-check">数字 tabular-nums</div>
+            <div class="g-check">按钮有 hover/active/focus/disabled</div>
+            <div class="g-check">选项对错有颜色 + 图标 + 文字</div>
+            <div class="g-check">小肥鱼每屏只主露出一次</div>
+            <div class="g-check">气泡不遮挡主 CTA</div>
+            <div class="g-check">空态有插画 + 鼓励 + 下一步</div>
+            <div class="g-check">Toast 2.8s 消失且不阻塞</div>
+            <div class="g-check">常驻动效 ≤1 处，庆祝 ≤2.6s</div>
+            <div class="g-check">prefers-reduced-motion 全部关闭</div>
+            <div class="g-check">没有排名/羞辱/“前功尽弃”</div>
+            <div class="g-check">触控 ≥44px，图标有 aria-label</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 15 TOKEN ================= -->
+      <section class="g-sec" id="tokens">
+        <div class="g-sechead"><div class="no">15</div><h2>落地：Token 用法</h2><span class="hint">新页面只消费 token，不复制硬编码</span></div>
+        <div class="g-panel">
+          <p class="g-lead" style="margin-bottom:8px">引入 <code>xiaofeiyu-design-tokens.css</code>，所有新组件从变量出发。</p>
+          <pre class="g-code"><span class="c">/* 一个标准糖果卡片 */</span>
+.xfe-my-card {
+  background: <span class="v">var(--xfe-paper)</span>;
+  border: <span class="v">var(--xfe-border)</span>;
+  border-radius: <span class="v">var(--xfe-r-lg)</span>;
+  box-shadow: <span class="v">var(--xfe-shadow-card)</span>;
+  padding: <span class="v">var(--xfe-sp-8)</span>;
+}
+
+<span class="c">/* 珊瑚上的小字：不要纯白 */</span>
+.xfe-my-cta {
+  background: <span class="v">var(--xfe-coral)</span>;
+  color: <span class="v">var(--xfe-on-coral)</span>;
+  border: <span class="v">var(--xfe-border)</span>;
+  box-shadow: <span class="v">var(--xfe-shadow-button)</span>;
+}</pre>
+          <div class="g-note" style="margin-top:11px"><b>命名：</b>组件类以 <code>xfe-</code> 开头；变体用 <code>is-primary / is-sun / is-mint / is-ghost / is-sm</code>；状态用 <code>is-correct / is-wrong / is-active</code>。不覆盖宿主 <code>button/input/body</code>。</div>
+        </div>
+      </section>
+
+      <footer class="g-footer">
+        <span>小肥鱼学习平台 · 海底糖果设计语言 v1.2</span>
+        <span><a href="./xiaofeiyu-design-spec.md">规范 MD</a> · <a href="./xiaofeiyu-design-tokens.css">Tokens CSS</a> · 2026-11 · 先读规范，再动 CSS</span>
+      </footer>
+    </main>
+  </div>
+</div>
+</body>
+</html>
