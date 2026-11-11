@@ -47,6 +47,8 @@ jobs:
           $assets = @(
             "release/xiaofeiyu-academy-$version.tgz",
             "release/xiaofeiyu-academy-v$version-installer.zip",
+            "release/xiaofeiyu-academy-latest.tgz",
+            "release/xiaofeiyu-academy-installer.zip",
             "release/update.json",
             "release/SHA256SUMS.txt"
           )

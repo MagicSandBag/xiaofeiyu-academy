@@ -29,9 +29,13 @@ try {
   $tgz = Join-Path $release $tgzName
   $zip = Join-Path $release $zipName
   $asciiZip = Join-Path $release "xiaofeiyu-academy-v$version-installer.zip"
+  $latestZip = Join-Path $release 'xiaofeiyu-academy-installer.zip'
+  $latestTgz = Join-Path $release 'xiaofeiyu-academy-latest.tgz'
   if (Test-Path $tgz) { Remove-Item $tgz -Force }
   if (Test-Path $zip) { Remove-Item $zip -Force }
   if (Test-Path $asciiZip) { Remove-Item $asciiZip -Force }
+  if (Test-Path $latestZip) { Remove-Item $latestZip -Force }
+  if (Test-Path $latestTgz) { Remove-Item $latestTgz -Force }
 
   npm pack --pack-destination $release
   if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
@@ -76,6 +80,8 @@ try {
     (Join-Path $release 'SHA256SUMS.txt')
   ) -DestinationPath $zip -CompressionLevel Optimal
   Copy-Item $zip $asciiZip -Force
+  Copy-Item $zip $latestZip -Force
+  Copy-Item $tgz $latestTgz -Force
 
   Write-Host ""
   Write-Host "Release built:"
@@ -84,6 +90,7 @@ try {
   Write-Host "  tgz     : $tgz"
   Write-Host "  zip     : $zip"
   Write-Host "  zip(ASCII): $asciiZip"
+  Write-Host "  latest  : $latestTgz / $latestZip"
   Write-Host "  manifest: $(Join-Path $release 'update.json')"
   Write-Host "  sha256  : $hash"
   Write-Host ""

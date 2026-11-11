@@ -8,7 +8,7 @@ window.__ModuleLoader__.load({
     const NS = 'xiaofeiyu-academy';
     const STORAGE_KEY = 'xiaofeiyu-academy:v1';
     const ART = '/xiaofeiyu-academy/assets/';
-    const APP_VERSION = '1.2.1';
+    const APP_VERSION = '1.2.2';
     const UPDATE_API = '/xiaofeiyu-academy/update';
     const UPDATE_PAGE = 'https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest';
 
@@ -164,7 +164,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': '下载新版本',
       'settings.updateHint': '下载后在 DSH 插件管理器里覆盖安装；学习数据会保留。',
       'settings.updateFailed': '暂时检查不到更新，稍后再试。',
-      'settings.aboutText': '小肥鱼学习平台 1.2.1 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
+      'settings.aboutText': '小肥鱼学习平台 1.2.2 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
       'settings.credit': '形象来自本机 dsh-pet 的小肥鱼 IP，仅供个人学习使用。',
       'toast.saved': '设置保存啦',
       'toast.reset': '学习进度已重置',
@@ -460,7 +460,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': 'Download update',
       'settings.updateHint': 'Install it over the old bundle in DSH; learning data is kept.',
       'settings.updateFailed': 'Could not check for updates. Try again later.',
-      'settings.aboutText': 'Xiaofeiyu Academy 1.2.1 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
+      'settings.aboutText': 'Xiaofeiyu Academy 1.2.2 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
       'settings.credit': 'Mascot art comes from the local dsh-pet Xiaofeiyu IP, for personal study use.',
       'toast.saved': 'Settings saved',
       'toast.reset': 'Progress reset',
@@ -2389,7 +2389,7 @@ window.__ModuleLoader__.load({
          bigger and airier for kids sitting farther from a desktop monitor. */
       @media (min-width: 1500px) {
         .xfe-app.is-overlay { grid-template-columns: 126px minmax(0,1fr) 372px; }
-        .xfe-app.is-overlay .xfe-main { padding: 28px 36px 46px; }
+        .xfe-app.is-overlay .xfe-main { padding: 28px 36px 34px; }
         .xfe-app.is-overlay .xfe-header { gap: 14px; margin-bottom: 24px; }
         .xfe-app.is-overlay .xfe-header-title { font-size: 14px; }
         .xfe-app.is-overlay .xfe-nav button { min-height: 66px; font-size: 12px; }
@@ -2406,13 +2406,30 @@ window.__ModuleLoader__.load({
         .xfe-app.is-overlay .xfe-card-sub { font-size: 15px; }
         .xfe-app.is-overlay .xfe-section-head h3 { font-size: 20px; }
         .xfe-app.is-overlay .xfe-section-head p { font-size: 12px; }
-        .xfe-app.is-overlay .xfe-hero { min-height: 280px; padding: 30px; }
-        .xfe-app.is-overlay .xfe-hero h2 { font-size: clamp(36px, 3vw, 54px); }
+        .xfe-app.is-overlay .xfe-hero { min-height: 300px; padding: 24px; }
+        .xfe-app.is-overlay .xfe-hero h2 { font-size: clamp(36px, 3vw, 48px); }
         .xfe-app.is-overlay .xfe-hero p { font-size: 16px; line-height: 1.65; }
-        .xfe-app.is-overlay .xfe-hero { min-height: 360px; }
-        .xfe-app.is-overlay .xfe-subject-card { min-height: 230px; }
+        .xfe-app.is-overlay .xfe-hero-stats { margin-top: 10px; }
+        .xfe-app.is-overlay .xfe-subject-card { min-height: 180px; }
+        .xfe-app.is-overlay .xfe-daily-card { padding: 14px; margin-top: 14px; }
+        .xfe-app.is-overlay .xfe-section-head { margin: 20px 0 10px; }
+        .xfe-app.is-overlay .xfe-daily-head h3 { font-size: 20px; }
+        .xfe-app.is-overlay .xfe-daily-head p { font-size: 12px; }
+        .xfe-app.is-overlay .xfe-daily-grid { gap: 12px; margin-top: 12px; }
+        .xfe-app.is-overlay .xfe-daily-quest { padding: 10px; }
+        .xfe-app.is-overlay .xfe-daily-copy b { font-size: 13px; }
+        .xfe-app.is-overlay .xfe-daily-copy small { font-size: 10px; }
+        .xfe-app.is-overlay .xfe-daily-claim { min-height: 32px; padding: 4px 9px; font-size: 10px; }
+        .xfe-app.is-overlay .xfe-hero-stat { min-height: 34px; padding: 4px 10px; font-size: 11px; }
+        .xfe-app.is-overlay .xfe-hero-stat b { font-size: 15px; }
+        .xfe-app.is-overlay .xfe-hero-stat small { font-size: 10px; }
+        .xfe-app.is-overlay .xfe-recent-card { padding: 18px; }
+        .xfe-app.is-overlay .xfe-recent-head h4 { font-size: 18px; }
+        .xfe-app.is-overlay .xfe-recent-item span { font-size: 12px; }
+        .xfe-app.is-overlay .xfe-recent-item small { font-size: 9px; }
         .xfe-app.is-overlay .xfe-focus-card,
-        .xfe-app.is-overlay .xfe-tip-card { min-height: 235px; }
+        .xfe-app.is-overlay .xfe-tip-card,
+        .xfe-app.is-overlay .xfe-recent-card { min-height: 0; }
         .xfe-app.is-overlay .xfe-quest-card { min-height: 480px; }
         .xfe-app.is-overlay .xfe-subject-card { padding: 20px 18px 17px; }
         .xfe-app.is-overlay .xfe-subject-icon { width: 48px; height: 48px; font-size: 24px; }
@@ -2569,6 +2586,63 @@ window.__ModuleLoader__.load({
       .xfe-hero-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 17px; }
       .xfe-hero-mascot { position: relative; align-self: end; justify-self: center; width: min(230px, 100%); }
       .xfe-hero-mascot .xfe-speech { position: absolute; right: -6px; top: -8px; z-index: 4; max-width: 150px; font-size: 10px; transform: rotate(2deg); }
+      .xfe-hero-stats { display: flex; align-items: stretch; gap: 7px; flex-wrap: wrap; margin-top: 13px; }
+      .xfe-hero-stat {
+        display: flex; align-items: center; gap: 5px; min-height: 34px; padding: 4px 9px;
+        border: 1.5px solid rgba(31,42,91,.18); border-radius: 999px; background: rgba(255,255,255,.72);
+        color: var(--xfe-ink); font-size: 10px; font-weight: 800;
+      }
+      .xfe-hero-stat b { font-size: 14px; letter-spacing: -.02em; }
+      .xfe-hero-stat small { color: var(--xfe-ink-soft); font-size: 9px; font-weight: 700; }
+
+      .xfe-daily-card { padding: 18px; margin-top: 18px; }
+      .xfe-daily-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+      .xfe-daily-head h3 { margin: 0; color: var(--xfe-ink); font-size: 18px; font-weight: 900; }
+      .xfe-daily-head p { margin: 3px 0 0; color: var(--xfe-ink-soft); font-size: 11px; font-weight: 700; }
+      .xfe-daily-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+      .xfe-daily-quest {
+        display: grid; grid-template-columns: 38px minmax(0,1fr) auto; gap: 8px; align-items: center;
+        padding: 10px; border: 1.5px solid rgba(31,42,91,.14); border-radius: 15px; background: #f7f4e8;
+      }
+      .xfe-daily-quest.is-done { background: var(--xfe-mint-soft); border-color: var(--xfe-mint-ink); }
+      .xfe-daily-quest.is-claimed { opacity: .72; }
+      .xfe-daily-icon { width: 38px; height: 38px; display: grid; place-items: center; border: 1.5px solid rgba(31,42,91,.16); border-radius: 12px; background: #fff; font-size: 18px; }
+      .xfe-daily-copy { min-width: 0; }
+      .xfe-daily-copy b { display: block; color: var(--xfe-ink); font-size: 11px; line-height: 1.25; }
+      .xfe-daily-copy small { display: block; margin-top: 2px; color: var(--xfe-ink-soft); font-size: 9px; font-weight: 700; line-height: 1.3; }
+      .xfe-daily-claim {
+        min-height: 29px; padding: 3px 8px; border: 1.5px solid var(--xfe-ink); border-radius: 9px;
+        background: var(--xfe-sun); color: var(--xfe-ink); font-size: 9px; font-weight: 900; cursor: pointer;
+        box-shadow: 0 2px 0 rgba(31,42,91,.22); white-space: nowrap;
+      }
+      .xfe-daily-claim:disabled { background: #eee9da; color: #9b967f; border-color: rgba(31,42,91,.2); box-shadow: none; cursor: default; }
+      .xfe-daily-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--xfe-line); color: var(--xfe-ink-soft); font-size: 9px; font-weight: 700; }
+      .xfe-bottom-grid-3 { grid-template-columns: 1.05fr .95fr .9fr; }
+      .xfe-bottom-grid.xfe-bottom-grid-3 { grid-template-columns: 1.05fr .95fr .9fr; }
+      @media (max-width: 1400px) {
+        .xfe-daily-grid { grid-template-columns: 1fr 1fr; }
+        .xfe-bottom-grid.xfe-bottom-grid-3 { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 1120px) {
+        .xfe-bottom-grid.xfe-bottom-grid-3 { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 760px) {
+        .xfe-bottom-grid.xfe-bottom-grid-3 { grid-template-columns: 1fr; }
+      }
+      .xfe-recent-card { padding: 16px; background: linear-gradient(145deg, #fff, #f8f4e8); }
+      .xfe-recent-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+      .xfe-recent-head h4 { margin: 0; color: var(--xfe-ink); font-size: 16px; }
+      .xfe-recent-list { display: flex; flex-direction: column; gap: 6px; margin-top: 9px; }
+      .xfe-recent-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 9px; border: 1px solid var(--xfe-line); border-radius: 10px; background: #fff; color: var(--xfe-ink); text-align: left; cursor: pointer; }
+      .xfe-recent-item span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; font-weight: 800; }
+      .xfe-recent-item small { flex: 0 0 auto; color: var(--xfe-coral-ink); font-size: 8px; font-weight: 900; }
+      .xfe-resume-banner {
+        display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+        margin-bottom: 14px; padding: 11px 13px; border: 2px solid var(--xfe-mint-ink); border-radius: 14px;
+        background: var(--xfe-mint-soft); box-shadow: var(--xfe-shadow-hard-xs);
+      }
+      .xfe-resume-banner b { display: block; color: var(--xfe-ink); font-size: 12px; }
+      .xfe-resume-banner small { display: block; margin-top: 2px; color: var(--xfe-ink-soft); font-size: 9px; font-weight: 700; }
 
       .xfe-btn {
         display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px;
@@ -3171,6 +3245,8 @@ window.__ModuleLoader__.load({
         .xfe-app { grid-template-columns: 92px minmax(0,1fr); }
         .xfe-app.is-overlay { grid-template-columns: 92px minmax(0,1fr); }
         .xfe-side { display: none; }
+        .xfe-daily-grid { grid-template-columns: 1fr 1fr; }
+        .xfe-bottom-grid-3 { grid-template-columns: 1fr 1fr; }
       }
       @media (max-width: 920px) {
         .xfe-home-grid { grid-template-columns: 1fr; }
@@ -3197,6 +3273,8 @@ window.__ModuleLoader__.load({
         .xfe-app.is-overlay .xfe-card-pad,
         .xfe-app.is-overlay .xfe-quest-card,
         .xfe-app.is-overlay .xfe-question-card { padding: 14px; }
+        .xfe-daily-grid { grid-template-columns: 1fr; }
+        .xfe-bottom-grid-3 { grid-template-columns: 1fr; }
         .xfe-embed { padding: 0; min-height: 0; height: 100%; }
         .xfe-app.is-embedded { height: 100%; min-height: 0; max-height: none; border-radius: 0; border: 0; box-shadow: none; }        .xfe-rail { grid-row: 2; grid-column: 1; flex-direction: row; align-items: center; justify-content: space-around; padding: 6px 5px calc(6px + env(safe-area-inset-bottom)); border-right: 0; border-top: 3px solid var(--xfe-ink); gap: 2px; }
         .xfe-brand, .xfe-brand-text, .xfe-rail-bottom { display: none; }
@@ -4221,6 +4299,11 @@ window.__ModuleLoader__.load({
           onReview: reviewMistake,
           onVariant: openVariant,
           onCapture: () => setCaptureOpen(true),
+          resumeQuiz: quiz && !quiz.finished ? {
+            index: quiz.index + 1,
+            total: quiz.questions.length,
+            onResume: () => setView('practice'),
+          } : null,
           onPractice: () => { setView('practice'); setQuiz(null); },
         });
       } else if (view === 'growth') {
@@ -4454,12 +4537,15 @@ window.__ModuleLoader__.load({
         h(
           'section',
           { className: 'xfe-side-card' },
-          h('h4', { className: 'xfe-side-title' }, '📌 今日任务'),
-          h('div', { className: 'xfe-side-list' },
-            h('div', { className: 'xfe-side-row' }, h('i', { className: 'xfe-dot', style: { '--c': '#20c8b8' } }), h('span', null, '答对 8 题'), h('b', null, `${Math.min(day.correct, 8)}/8`)),
-            h('div', { className: 'xfe-side-row' }, h('i', { className: 'xfe-dot', style: { '--c': '#ff6f61' } }), h('span', null, '错题复习'), h('b', null, `${Math.min(day.reviewed, 2)}/2`)),
-            h('div', { className: 'xfe-side-row' }, h('i', { className: 'xfe-dot', style: { '--c': '#ffd23f' } }), h('span', null, '专注 10 分钟'), h('b', null, `${Math.min(day.minutes, 10)}/10`)),
-          ),
+          h('h4', { className: 'xfe-side-title' }, '🐟 小肥鱼日记'),
+          data.diary && data.diary.length
+            ? h('div', { className: 'xfe-side-list' },
+                data.diary.slice(0, 3).map((entry) => h('div', { key: entry.id, className: 'xfe-side-row' },
+                  h('span', null, `${entry.emoji || '🐟'} ${entry.text.length > 28 ? `${entry.text.slice(0, 28)}…` : entry.text}`),
+                )),
+              )
+            : h('p', { className: 'xfe-card-sub' }, t('pet.diaryEmpty')),
+          h('button', { type: 'button', className: 'xfe-btn is-mint is-sm is-full', style: { marginTop: '9px' }, onClick: onFeed }, '🐳 去成长湾'),
         ),
         h(
           'section',
@@ -4485,6 +4571,9 @@ window.__ModuleLoader__.load({
       const mm = pad(Math.floor(remaining / 60000));
       const ss = pad(Math.floor((remaining % 60000) / 1000));
       const speech = data.streak >= 3 ? `连续 ${data.streak} 天，小肥鱼已经把你写进鱼鳍日记啦！` : weak ? `小肥鱼发现 ${weak.id === 'math' ? '数学' : weak.id === 'chinese' ? '语文' : '英语'} 有点小波浪，要一起冲过去吗？` : '今天的海风刚刚好，适合学一点点新东西。';
+      const todayAccuracy = day.questions ? pct(day.correct, day.questions) : 0;
+      const doneQuests = quests.filter((q) => q.value >= q.target).length;
+      const recentMistakes = data.mistakes.slice(0, 2);
 
       return h(
         'div',
@@ -4498,6 +4587,11 @@ window.__ModuleLoader__.load({
             h('span', { className: 'xfe-kicker' }, '🐚 ', t('home.hero.kicker')),
             h('h2', null, `${greeting}，${data.name}！`, h('br'), t('home.hero.title')),
             h('p', null, t('home.hero.subtitle')),
+            h('div', { className: 'xfe-hero-stats' },
+              h('div', { className: 'xfe-hero-stat' }, h('span', null, '📚'), h('b', null, `${day.questions}`), h('small', null, '今日答题')),
+              h('div', { className: 'xfe-hero-stat' }, h('span', null, '✅'), h('b', null, day.questions ? `${todayAccuracy}%` : '—'), h('small', null, '今日正确率')),
+              h('div', { className: 'xfe-hero-stat' }, h('span', null, '🐚'), h('b', null, `${data.stats.shells || 0}`), h('small', null, t('pet.shells'))),
+            ),
             h(
               'div',
               { className: 'xfe-hero-actions' },
@@ -4513,105 +4607,111 @@ window.__ModuleLoader__.load({
           ),
         ),
         h(
-          'div',
-          { className: 'xfe-home-grid' },
-          h(
-            'div',
-            null,
-            h(SectionHead, { title: t('home.subjects'), sub: t('home.subjects.sub'), t }),
-            h(
-              'div',
-              { className: 'xfe-subjects' },
-              SUBJECTS.map((meta) => {
-                const st = subjectStats(data, meta.id);
-                return h(
-                  'button',
-                  {
-                    key: meta.id,
-                    type: 'button',
-                    className: 'xfe-subject-card',
-                    style: { '--soft': meta.soft, '--bar': meta.color },
-                    onClick: () => onStart(meta.id),
-                  },
-                  h('span', { className: 'xfe-subject-icon' }, meta.icon),
-                  h('h4', null, subjectText(t, meta.id)),
-                  h('p', null, t(`subject.${meta.id}.tag`)),
-                  h(
-                    'div',
-                    { className: 'xfe-subject-meta' },
-                    h('span', { className: 'xfe-mini-bar' }, h('span', { style: { width: `${st.q ? st.acc : 8}%` } })),
-                    h('b', null, st.q ? `${st.acc}%` : '新海域'),
-                  ),
-                );
-              }),
+          'section',
+          { className: 'xfe-card xfe-daily-card' },
+          h('div', { className: 'xfe-daily-head' },
+            h('div', null,
+              h('h3', null, '🎯 ', t('home.quests')),
+              h('p', null, t('home.quests.sub')),
             ),
+            h('span', { className: 'xfe-chip is-sun' }, `${doneQuests}/${quests.length} 完成`),
+          ),
+          h('div', { className: 'xfe-daily-grid' },
+            quests.map((q) => {
+              const done = q.value >= q.target;
+              return h('article', { key: q.id, className: `xfe-daily-quest ${done ? 'is-done' : ''} ${q.claimed ? 'is-claimed' : ''}` },
+                h('span', { className: 'xfe-daily-icon' }, q.icon),
+                h('div', { className: 'xfe-daily-copy' },
+                  h('b', null, q.label),
+                  h('small', null, q.hint),
+                  h('div', { className: 'xfe-quest-progress' }, h('span', { style: { width: `${Math.min(100, pct(q.value, q.target))}%` } })),
+                ),
+                h('button', {
+                  type: 'button',
+                  className: 'xfe-daily-claim',
+                  onClick: () => onClaim(q),
+                  disabled: q.claimed || !done,
+                }, q.claimed ? '✓ 已领' : done ? '领取' : `${Math.floor(q.value)}/${q.target}`),
+              );
+            }),
+          ),
+          h('div', { className: 'xfe-daily-foot' },
+            h('span', null, '🎁 任务奖励直接进金币罐，攒着去小卖部喂小肥鱼。'),
+            h('button', { type: 'button', className: 'xfe-chip-btn', onClick: () => onNavigate('growth') }, '去小卖部 →'),
+          ),
+        ),
+        h(SectionHead, { title: t('home.subjects'), sub: t('home.subjects.sub'), t }),
+        h(
+          'div',
+          { className: 'xfe-subjects' },
+          SUBJECTS.map((meta) => {
+            const st = subjectStats(data, meta.id);
+            return h(
+              'button',
+              {
+                key: meta.id,
+                type: 'button',
+                className: 'xfe-subject-card',
+                style: { '--soft': meta.soft, '--bar': meta.color },
+                onClick: () => onStart(meta.id),
+              },
+              h('span', { className: 'xfe-subject-icon' }, meta.icon),
+              h('h4', null, subjectText(t, meta.id)),
+              h('p', null, t(`subject.${meta.id}.tag`)),
+              h(
+                'div',
+                { className: 'xfe-subject-meta' },
+                h('span', { className: 'xfe-mini-bar' }, h('span', { style: { width: `${st.q ? st.acc : 8}%` } })),
+                h('b', null, st.q ? `${st.acc}%` : '新海域'),
+              ),
+            );
+          }),
+        ),
+        h(
+          'div',
+          { className: 'xfe-bottom-grid xfe-bottom-grid-3' },
+          h(
+            'section',
+            { className: 'xfe-focus-card xfe-card' },
             h(
               'div',
-              { className: 'xfe-bottom-grid' },
+              { className: 'xfe-focus-top' },
+              h('div', { className: 'xfe-focus-ring', style: { '--p': focusPct } }, h('span', { className: 'xfe-focus-time' }, `${mm}:${ss}`)),
               h(
-                'section',
-                { className: 'xfe-focus-card xfe-card' },
+                'div',
+                { className: 'xfe-focus-copy' },
+                h('h4', null, `🫧 ${t('home.focus')}`),
+                h('p', null, focus.done ? '这一轮完成啦，泡泡里装满了专注力。' : t('home.focus.sub')),
                 h(
                   'div',
-                  { className: 'xfe-focus-top' },
-                  h('div', { className: 'xfe-focus-ring', style: { '--p': focusPct } }, h('span', { className: 'xfe-focus-time' }, `${mm}:${ss}`)),
-                  h(
-                    'div',
-                    { className: 'xfe-focus-copy' },
-                    h('h4', null, `🫧 ${t('home.focus')}`),
-                    h('p', null, focus.done ? '这一轮完成啦，泡泡里装满了专注力。' : t('home.focus.sub')),
-                    h(
-                      'div',
-                      { className: 'xfe-focus-modes' },
-                      [1, 5, 10, 25].map((m) => h('button', { key: m, type: 'button', className: focus.minutes === m ? 'is-on' : '', onClick: () => onFocusMinutes(m), disabled: focus.running || m === focus.minutes }, `${m} 分钟`)),
-                    ),
-                    h('button', { type: 'button', className: 'xfe-btn is-mint is-sm', style: { marginTop: '8px' }, onClick: onFocus }, focus.running ? '⏸ ' + t('home.focus.pause') : focus.done ? '🔁 再来一轮' : '▶ ' + t('home.focus.start')),
-                  ),
+                  { className: 'xfe-focus-modes' },
+                  [1, 5, 10, 25].map((m) => h('button', { key: m, type: 'button', className: focus.minutes === m ? 'is-on' : '', onClick: () => onFocusMinutes(m), disabled: focus.running || m === focus.minutes }, `${m} 分钟`)),
                 ),
-              ),
-              h(
-                'section',
-                { className: 'xfe-tip-card xfe-card' },
-                h('h4', null, `💡 ${t('home.tip')}`),
-                h('p', null, tip),
+                h('button', { type: 'button', className: 'xfe-btn is-mint is-sm', style: { marginTop: '8px' }, onClick: onFocus }, focus.running ? '⏸ ' + t('home.focus.pause') : focus.done ? '🔁 再来一轮' : '▶ ' + t('home.focus.start')),
               ),
             ),
           ),
           h(
             'section',
-            { className: 'xfe-quest-card xfe-card' },
-            h('div', null,
-              h('h3', { className: 'xfe-card-title' }, '🎯 ', t('home.quests')),
-              h('p', { className: 'xfe-card-sub' }, t('home.quests.sub')),
+            { className: 'xfe-tip-card xfe-card' },
+            h('h4', null, `💡 ${t('home.tip')}`),
+            h('p', null, tip),
+          ),
+          h(
+            'section',
+            { className: 'xfe-recent-card xfe-card' },
+            h('div', { className: 'xfe-recent-head' },
+              h('h4', null, `🧹 ${t('home.recent')}`),
+              h('button', { type: 'button', className: 'xfe-chip-btn', onClick: () => onNavigate('mistakes') }, '全部 →'),
             ),
-            h(
-              'div',
-              { className: 'xfe-quest-list' },
-              quests.map((q) => {
-                const done = q.value >= q.target;
-                return h(
-                  'div',
-                  { key: q.id, className: `xfe-quest ${q.claimed ? 'is-done' : ''}` },
-                  h('div', { className: 'xfe-quest-icon' }, q.icon),
-                  h(
-                    'div',
-                    null,
-                    h('div', { className: 'xfe-quest-label' }, q.label),
-                    h('div', { className: 'xfe-quest-hint' }, q.hint),
-                    h('div', { className: 'xfe-quest-progress' }, h('span', { style: { width: `${Math.min(100, pct(q.value, q.target))}%` } })),
-                  ),
-                  h(
-                    'button',
-                    { type: 'button', onClick: () => onClaim(q), disabled: q.claimed || !done },
-                    q.claimed ? t('common.claimed') : done ? t('common.claim') : `${Math.floor(q.value)}/${q.target}`,
-                  ),
-                );
-              }),
-            ),
-            h('div', { className: 'xfe-card-soft', style: { marginTop: '12px', padding: '10px' } },
-              h('div', { className: 'xfe-card-sub' }, '🎁 任务奖励会直接进你的金币罐，攒着去小卖部喂小肥鱼。'),
-              h('button', { type: 'button', className: 'xfe-btn is-sm is-full', style: { marginTop: '7px' }, onClick: () => onNavigate('growth') }, '去小卖部看看'),
-            ),
+            recentMistakes.length
+              ? h('div', { className: 'xfe-recent-list' },
+                  recentMistakes.map((m) => h('button', { key: m.id, type: 'button', className: 'xfe-recent-item', onClick: () => onNavigate('mistakes') },
+                    h('span', null, h(MathText, { text: m.prompt.length > 34 ? `${m.prompt.slice(0, 34)}…` : m.prompt })),
+                    h('small', null, '去复习'),
+                  )),
+                )
+              : h('p', { className: 'xfe-card-sub' }, t('home.recent.empty')),
           ),
         ),
       );
@@ -5583,7 +5683,7 @@ window.__ModuleLoader__.load({
       );
     }
 
-    function MistakesView({ t, data, filter, setFilter, onReview, onVariant, onCapture, onPractice }) {
+    function MistakesView({ t, data, filter, setFilter, onReview, onVariant, onCapture, onPractice, resumeQuiz }) {
       const filters = [{ id: 'all', label: t('mistakes.all') }, ...SUBJECTS.map((s) => ({ id: s.id, label: subjectText(t, s.id) }))];
       const list = data.mistakes.filter((m) => filter === 'all' || m.subject === filter);
       return h(
@@ -5600,6 +5700,15 @@ window.__ModuleLoader__.load({
             h('button', { type: 'button', className: 'xfe-btn is-primary is-sm', onClick: onCapture }, '📷 ', t('capture.title')),
           ),
         ),
+        resumeQuiz
+          ? h('div', { className: 'xfe-resume-banner' },
+              h('div', null,
+                h('b', null, '这一关还没做完'),
+                h('small', null, `第 ${resumeQuiz.index} / ${resumeQuiz.total} 题，随时可以回来接着答。`),
+              ),
+              h('button', { type: 'button', className: 'xfe-btn is-primary is-sm', onClick: resumeQuiz.onResume }, '▶ 继续答题'),
+            )
+          : null,
         h('div', { className: 'xfe-filter-row' },
           filters.map((f) => h('button', { key: f.id, type: 'button', className: `xfe-filter ${filter === f.id ? 'is-on' : ''}`, onClick: () => setFilter(f.id) }, f.label)),
         ),
