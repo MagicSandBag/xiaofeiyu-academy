@@ -94,7 +94,8 @@ xiaofeiyu-academy/
 小肥鱼是 DSH 插件 bundle，不是一个独立网站。已经打好可直接分发的安装包：
 
 - `release/xiaofeiyu-academy-1.2.0.tgz`（约 8 MB，含预览图、PDF.js 与安装说明）
-- `release/小肥鱼学习平台-v1.2.0-安装包.zip`（含 tgz、安装说明、README、校验值）
+- `release/xiaofeiyu-academy-v1.2.0-installer.zip`（GitHub Release 用 ASCII 文件名）
+- `release/小肥鱼学习平台-v1.2.0-安装包.zip`（中文名安装包，内容相同）
 - `release/update.json`（更新清单模板；发布前把 `example.com` 换成真实地址）
 - [完整安装说明](安装说明.md)
 - [更新与发布管理](docs/更新与发布.md)

@@ -28,8 +28,10 @@ try {
   $zipName = "小肥鱼学习平台-v$version-安装包.zip"
   $tgz = Join-Path $release $tgzName
   $zip = Join-Path $release $zipName
+  $asciiZip = Join-Path $release "xiaofeiyu-academy-v$version-installer.zip"
   if (Test-Path $tgz) { Remove-Item $tgz -Force }
   if (Test-Path $zip) { Remove-Item $zip -Force }
+  if (Test-Path $asciiZip) { Remove-Item $asciiZip -Force }
 
   npm pack --pack-destination $release
   if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
@@ -73,6 +75,7 @@ try {
     (Join-Path $release 'update.json'),
     (Join-Path $release 'SHA256SUMS.txt')
   ) -DestinationPath $zip -CompressionLevel Optimal
+  Copy-Item $zip $asciiZip -Force
 
   Write-Host ""
   Write-Host "Release built:"
@@ -80,6 +83,7 @@ try {
   Write-Host "  channel : $Channel"
   Write-Host "  tgz     : $tgz"
   Write-Host "  zip     : $zip"
+  Write-Host "  zip(ASCII): $asciiZip"
   Write-Host "  manifest: $(Join-Path $release 'update.json')"
   Write-Host "  sha256  : $hash"
   Write-Host ""

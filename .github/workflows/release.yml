@@ -43,8 +43,16 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $tag = "${{ github.ref_name }}"
-          $assets = @(Get-ChildItem release -File | Select-Object -ExpandProperty FullName)
-          if ($assets.Count -eq 0) { throw 'No release assets were built.' }
+          $version = $tag.TrimStart('v')
+          $assets = @(
+            "release/xiaofeiyu-academy-$version.tgz",
+            "release/xiaofeiyu-academy-v$version-installer.zip",
+            "release/update.json",
+            "release/SHA256SUMS.txt"
+          )
+          foreach ($asset in $assets) {
+            if (-not (Test-Path $asset)) { throw "Missing release asset: $asset" }
+          }
           gh release create $tag $assets `
             --title "小肥鱼学习平台 $tag" `
             --notes-file CHANGELOG.md
