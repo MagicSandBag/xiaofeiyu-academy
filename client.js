@@ -8,7 +8,7 @@ window.__ModuleLoader__.load({
     const NS = 'xiaofeiyu-academy';
     const STORAGE_KEY = 'xiaofeiyu-academy:v1';
     const ART = '/xiaofeiyu-academy/assets/';
-    const APP_VERSION = '1.2.2';
+    const APP_VERSION = '1.2.3';
     const UPDATE_API = '/xiaofeiyu-academy/update';
     const UPDATE_PAGE = 'https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest';
 
@@ -164,7 +164,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': '下载新版本',
       'settings.updateHint': '下载后在 DSH 插件管理器里覆盖安装；学习数据会保留。',
       'settings.updateFailed': '暂时检查不到更新，稍后再试。',
-      'settings.aboutText': '小肥鱼学习平台 1.2.2 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
+      'settings.aboutText': '小肥鱼学习平台 1.2.3 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
       'settings.credit': '形象来自本机 dsh-pet 的小肥鱼 IP，仅供个人学习使用。',
       'toast.saved': '设置保存啦',
       'toast.reset': '学习进度已重置',
@@ -460,7 +460,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': 'Download update',
       'settings.updateHint': 'Install it over the old bundle in DSH; learning data is kept.',
       'settings.updateFailed': 'Could not check for updates. Try again later.',
-      'settings.aboutText': 'Xiaofeiyu Academy 1.2.2 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
+      'settings.aboutText': 'Xiaofeiyu Academy 1.2.3 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
       'settings.credit': 'Mascot art comes from the local dsh-pet Xiaofeiyu IP, for personal study use.',
       'toast.saved': 'Settings saved',
       'toast.reset': 'Progress reset',
@@ -710,8 +710,9 @@ window.__ModuleLoader__.load({
     }
 
     const CHILD_AVATARS = ['🐳', '🐣', '🦊', '🐼', '🐸', '🐰', '🦄', '🐙'];
+    const HUNGER_DECAY_PER_HOUR = 3;
     const LEARNING_KEYS = [
-      'name', 'grade', 'xp', 'coins', 'hunger', 'lastFed',
+      'name', 'grade', 'xp', 'coins', 'hunger', 'hungerAt', 'lastFed',
       'streak', 'bestStreak', 'lastStudyDate', 'lastSubject',
       'daily', 'claimed', 'stats', 'bySubject', 'mistakes', 'diary',
       'owned', 'outfit',
@@ -763,6 +764,7 @@ window.__ModuleLoader__.load({
         xp: 0,
         coins: 60,
         hunger: 70,
+        hungerAt: Date.now(),
         lastFed: '',
         streak: 0,
         bestStreak: 0,
@@ -809,6 +811,7 @@ window.__ModuleLoader__.load({
       s.xp = Math.max(0, Number(s.xp) || 0);
       s.coins = Math.max(0, Number(s.coins) || 0);
       s.hunger = clamp(Number(s.hunger) || 0, 0, 100);
+      if (!Number(s.hungerAt)) s.hungerAt = Date.now();
       s.streak = Math.max(0, Number(s.streak) || 0);
       s.bestStreak = Math.max(s.bestStreak || 0, s.streak);
       s.stats = { ...base.stats, ...(s.stats || {}) };
@@ -885,7 +888,7 @@ window.__ModuleLoader__.load({
     function loadState() {
       try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
-        return normalizeState(raw ? JSON.parse(raw) : null);
+        return applyHungerDecay(normalizeState(raw ? JSON.parse(raw) : null));
       } catch {
         return defaultState();
       }
@@ -1354,6 +1357,35 @@ window.__ModuleLoader__.load({
     function ensureDay(state, key = dayKey()) {
       if (!state.daily[key]) state.daily[key] = emptyDay();
       return state.daily[key];
+    }
+
+    function hungerDecayPoints(state, now = Date.now()) {
+      const at = Number(state && state.hungerAt) || 0;
+      if (!at || !state || state.hunger <= 0) return 0;
+      const hours = (now - at) / 3600000;
+      if (hours < 0.2) return 0;
+      return Math.min(state.hunger, Math.floor(hours * HUNGER_DECAY_PER_HOUR));
+    }
+
+    function applyHungerDecay(state, now = Date.now()) {
+      const at = Number(state && state.hungerAt) || 0;
+      const points = hungerDecayPoints(state, now);
+      if (!points) return state;
+      const before = state.hunger;
+      state.hunger = clamp(state.hunger - points, 0, 100);
+      state.hungerAt = points >= HUNGER_DECAY_PER_HOUR ? at + (points / HUNGER_DECAY_PER_HOUR) * 3600000 : now;
+      if (before >= 30 && state.hunger < 30) {
+        addDiary(state, '🍽️', '咕噜咕噜…小肥鱼的肚子有点饿了，记得用贝壳换点好吃的。');
+      }
+      if (state.hunger === 0) {
+        addDiary(state, '😵', '小肥鱼饿得吐不出泡泡啦，喂点好吃的马上满血复活。');
+      }
+      return state;
+    }
+
+    function hoursUntilHungry(state) {
+      if (!state || state.hunger <= 30) return 0;
+      return (state.hunger - 30) / HUNGER_DECAY_PER_HOUR;
     }
 
     function touchStreak(state) {
@@ -2543,6 +2575,13 @@ window.__ModuleLoader__.load({
         height: 34px; padding: 0 8px; border: 2px solid var(--xfe-ink); border-radius: 999px;
         background: #fff; color: var(--xfe-ink); font-size: 12px; font-weight: 900; cursor: pointer; outline: none;
       }
+      .xfe-grade-wrap {
+        display: inline-flex; align-items: center; gap: 2px; padding: 0 3px 0 10px; height: 34px;
+        border: 2px solid var(--xfe-ink); border-radius: 999px; background: #fff;
+        box-shadow: 0 3px 0 rgba(31,42,91,.18);
+      }
+      .xfe-grade-label { font-size: 10px; font-weight: 900; color: var(--xfe-ink-soft); letter-spacing: .04em; }
+      .xfe-grade-wrap .xfe-grade-select { height: 28px; border: none; background: transparent; box-shadow: none; padding: 0 4px; }
       .xfe-icon-btn {
         position: relative; width: 36px; height: 36px; display: grid; place-items: center; border: 2px solid var(--xfe-ink);
         border-radius: 13px; background: #fff; color: var(--xfe-ink); font-size: 16px; cursor: pointer;
@@ -3633,6 +3672,18 @@ window.__ModuleLoader__.load({
         return () => { alive = false; };
       }, []);
 
+      useEffect(() => {
+        const tick = () => {
+          const current = getAcademyData();
+          if (hungerDecayPoints(current) > 0) {
+            setAcademyData((prev) => applyHungerDecay(JSON.parse(JSON.stringify(prev))));
+          }
+        };
+        tick();
+        const timer = setInterval(tick, 60000);
+        return () => clearInterval(timer);
+      }, []);
+
       const notify = useCallback((msg) => {
         setToast(msg);
         if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -3877,10 +3928,11 @@ window.__ModuleLoader__.load({
         commit((d) => {
           const dd = ensureDay(d);
           dd.quizzes += 1;
-          if (perfect) d.stats.perfectQuizzes = (d.stats.perfectQuizzes || 0) + 1;
-          grant(d, 20, 10);
+          if (perfect) d.stats.perfectQuizzes += 1;
+          grant(d, 20, d.hunger >= 80 ? 15 : 10);
           touchStreak(d);
         });
+        if (data.hunger >= 80) notify('小肥鱼吃饱啦，通关奖励 +15 🪙');
         setQuiz((prev) => ({ ...prev, finished: true }));
         playSound('win');
       };
@@ -3909,10 +3961,15 @@ window.__ModuleLoader__.load({
           return;
         }
         const leveled = levelOf(data.xp + food.xp) > levelOf(data.xp);
+        const firstMealToday = data.lastFed !== dayKey();
         commit((d) => {
           d.coins -= food.cost;
           d.hunger = clamp(d.hunger + food.hunger, 0, 100);
+          d.hungerAt = Date.now();
           d.stats.feedCount = (d.stats.feedCount || 0) + 1;
+          if (firstMealToday) {
+            addDiary(d, food.emoji, `小肥鱼吃到了${food.name}，饱饱度涨到 ${d.hunger}%${d.hunger >= 80 ? '，学起来特别有劲！' : '。'}`);
+          }
           d.lastFed = dayKey();
           grant(d, food.xp, 0);
         });
@@ -4345,7 +4402,10 @@ window.__ModuleLoader__.load({
             title: titleMap[view] || t('app.title'),
             level,
             embedded,
-            onGrade: (grade) => commit((d) => { d.grade = grade; }),
+            onGrade: (grade) => {
+              commit((d) => { d.grade = grade; });
+              notify(`题目难度已切到${gradeText(t, grade)}，出题和讲解都会跟着变`);
+            },
             onSettings: openSettings,
             onProfiles: () => setProfileOpen(true),
             updateAvailable,
@@ -4480,15 +4540,19 @@ window.__ModuleLoader__.load({
           h('span', { className: 'xfe-profile-caret' }, '▾'),
         ),
         h(
-          'select',
-          {
-            className: 'xfe-grade-select',
-            value: data.grade,
-            onChange: (e) => onGrade(clamp(Number(e.target.value) || 1, 1, 6)),
-            'aria-label': t('settings.grade'),
-            title: t('settings.grade'),
-          },
-          GRADE_IDS.map((g) => h('option', { key: g, value: g }, gradeText(t, g))),
+          'span',
+          { className: 'xfe-grade-wrap', title: '题目难度跟年级走：出题、讲解、教材目录都用它。切换学习档案时，难度会跟着档案变。' },
+          h('span', { className: 'xfe-grade-label' }, '难度'),
+          h(
+            'select',
+            {
+              className: 'xfe-grade-select',
+              value: data.grade,
+              onChange: (e) => onGrade(clamp(Number(e.target.value) || 1, 1, 6)),
+              'aria-label': `${t('settings.grade')}（决定题目难度）`,
+            },
+            GRADE_IDS.map((g) => h('option', { key: g, value: g }, gradeText(t, g))),
+          ),
         ),
         h('span', { className: 'xfe-header-spacer' }),
         h('span', { className: 'xfe-chip is-coral', title: t('header.streak') }, '🔥', `${data.streak}`, t('header.streak')),
@@ -4531,6 +4595,13 @@ window.__ModuleLoader__.load({
           h('div', { style: { marginTop: '10px' } },
             h('div', { className: 'xfe-level-line' }, h('span', null, `🍙 ${t('growth.hunger')}`), h('span', null, `${data.hunger}%`)),
             h(Progress, { value: data.hunger, max: 100, className: 'is-hunger' }),
+            h('small', { className: 'xfe-card-sub', style: { display: 'block', marginTop: '4px' } },
+              data.hunger <= 0
+                ? '饿扁了！快喂一口，马上复活。'
+                : data.hunger < 30
+                  ? '肚子在咕噜咕噜叫，投喂一口吧。'
+                  : `约 ${Math.max(1, Math.ceil(hoursUntilHungry(data)))} 小时后会饿，吃饱（80%以上）闯关多拿贝壳。`,
+            ),
             h('button', { type: 'button', className: 'xfe-btn is-sun is-sm is-full', style: { marginTop: '8px' }, onClick: onFeed }, '🍭 ', t('home.fish.feed')),
           ),
         ),
@@ -5779,6 +5850,17 @@ window.__ModuleLoader__.load({
             h(Mascot, { outfit: data.outfit, mood }),
             h('h3', null, data.name),
             h('p', null, data.hunger > 80 ? '肚皮圆滚滚，开心到吐泡泡。' : data.hunger < 30 ? '肚子有点扁，投喂一口吧。' : '正在认真长大的一只蓝色大肥鱼。'),
+            h('div', { style: { marginTop: '8px', textAlign: 'left' } },
+              h('div', { className: 'xfe-level-line' }, h('span', null, '🍙 饱饱度'), h('span', null, `${data.hunger}%`)),
+              h(Progress, { value: data.hunger, max: 100, className: 'is-hunger' }),
+              h('small', { className: 'xfe-card-sub', style: { display: 'block', marginTop: '4px' } },
+                data.hunger >= 100
+                  ? '吃得饱饱的，先去学习消耗一下吧。'
+                  : data.hunger <= 0
+                    ? '饿扁了！喂一口马上复活。'
+                    : `每小时会饿 ${HUNGER_DECAY_PER_HOUR} 点 · 约 ${Math.max(1, Math.ceil(hoursUntilHungry(data)))} 小时后饿肚子`,
+              ),
+            ),
             h('div', { className: 'xfe-pet-stats' },
               h('div', { className: 'xfe-pet-stat' }, h('b', null, `⭐ ${t('growth.level')} ${level}`), h('small', null, `${data.xp} XP`)),
               h('div', { className: 'xfe-pet-stat' }, h('b', null, `🍙 ${t('growth.hunger')}`), h('small', null, `${data.hunger}%`)),
@@ -5802,12 +5884,12 @@ window.__ModuleLoader__.load({
               'section',
               { className: 'xfe-card xfe-card-pad', style: { marginBottom: '12px' } },
               h('h3', { className: 'xfe-card-title' }, '🍭 ', t('growth.food')),
-              h('p', { className: 'xfe-card-sub' }, t('growth.food.sub')),
+              h('p', { className: 'xfe-card-sub' }, `${t('growth.food.sub')} 饱饱度 80% 以上通关，奖励多 5 贝壳。`),
               h('div', { className: 'xfe-shop-grid', style: { marginTop: '10px' } },
                 FOODS.map((food) => h('div', { key: food.id, className: 'xfe-shop-item' },
                   h('div', { className: 'xfe-shop-emoji' }, food.emoji),
                   h('div', { className: 'xfe-shop-copy' }, h('b', null, food.name), h('small', null, `+${food.hunger} 饱饱 · +${food.xp} XP`)),
-                  h('button', { type: 'button', onClick: () => onFeed(food), disabled: data.coins < food.cost }, `${food.cost} 🪙`),
+                  h('button', { type: 'button', onClick: () => onFeed(food), disabled: data.coins < food.cost || data.hunger >= 100 }, data.hunger >= 100 ? '吃饱啦' : `${food.cost} 🪙`),
                 )),
               ),
             ),
