@@ -8,7 +8,7 @@ window.__ModuleLoader__.load({
     const NS = 'xiaofeiyu-academy';
     const STORAGE_KEY = 'xiaofeiyu-academy:v1';
     const ART = '/xiaofeiyu-academy/assets/';
-    const APP_VERSION = '1.2.4';
+    const APP_VERSION = '1.2.5';
     const UPDATE_API = '/xiaofeiyu-academy/update';
     const UPDATE_PAGE = 'https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest';
 
@@ -164,7 +164,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': '下载新版本',
       'settings.updateHint': '下载后在 DSH 插件管理器里覆盖安装；学习数据会保留。',
       'settings.updateFailed': '暂时检查不到更新，稍后再试。',
-      'settings.aboutText': '小肥鱼学习平台 1.2.4 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
+      'settings.aboutText': '小肥鱼学习平台 1.2.5 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
       'settings.credit': '形象来自本机 dsh-pet 的小肥鱼 IP，仅供个人学习使用。',
       'toast.saved': '设置保存啦',
       'toast.reset': '学习进度已重置',
@@ -460,7 +460,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': 'Download update',
       'settings.updateHint': 'Install it over the old bundle in DSH; learning data is kept.',
       'settings.updateFailed': 'Could not check for updates. Try again later.',
-      'settings.aboutText': 'Xiaofeiyu Academy 1.2.4 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
+      'settings.aboutText': 'Xiaofeiyu Academy 1.2.5 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
       'settings.credit': 'Mascot art comes from the local dsh-pet Xiaofeiyu IP, for personal study use.',
       'toast.saved': 'Settings saved',
       'toast.reset': 'Progress reset',
@@ -1395,6 +1395,11 @@ window.__ModuleLoader__.load({
         if (raw === null) return state;
         state.hunger = clamp(Math.round(Number(raw) || 0), 0, 100);
         state.hungerAt = Date.now();
+        try {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch {
+          /* keep the preview in memory even if storage is unavailable */
+        }
         return state;
       } catch {
         return state;
@@ -4608,17 +4613,6 @@ window.__ModuleLoader__.load({
           { className: 'xfe-side-card' },
           h('div', { className: 'xfe-side-mascot' }, h(Mascot, { outfit: data.outfit, mood })),
           h('div', { className: 'xfe-side-speech' }, speech),
-          h('div', { className: 'xfe-level-line' }, h('span', null, `${data.name} · Lv.${level}`), h('span', { className: 'xfe-level-badge' }, '🐳 小肥鱼')),
-          h(Progress, { value: data.xp % 120, max: 120 }),
-          h('div', { className: 'xfe-side-mini-stats' }, 
-            h('div', { className: 'xfe-side-mini' }, h('b', null, `${data.stats.totalCorrect}`), h('small', null, '累计答对')),
-            h('div', { className: 'xfe-side-mini' }, h('b', null, `${pct(data.stats.totalCorrect, data.stats.totalQuestions)}%`), h('small', null, t('report.accuracy'))),
-          ),
-          h('div', { className: 'xfe-side-row', style: { marginTop: '7px' } },
-            h('i', { className: 'xfe-dot', style: { '--c': 'var(--xfe-lilac)' } }),
-            h('span', null, `🐚 ${t('pet.shells')}`),
-            h('b', null, `${data.stats.shells || 0}`),
-          ),
           h('div', { style: { marginTop: '10px' } },
             h('div', { className: 'xfe-level-line' }, h('span', null, `🍙 ${t('growth.hunger')}`), h('span', null, `${data.hunger}%`)),
             h(Progress, { value: data.hunger, max: 100, className: 'is-hunger' }),
@@ -4630,6 +4624,17 @@ window.__ModuleLoader__.load({
                   : `饱食度每 ${HUNGER_DECAY_MINUTES_PER_POINT} 分钟扣 1 点 · 吃饱（80%以上）闯关多拿贝壳`,
             ),
             h('button', { type: 'button', className: 'xfe-btn is-sun is-sm is-full', style: { marginTop: '8px' }, onClick: onFeed }, '🍭 ', t('home.fish.feed')),
+          ),
+          h('div', { className: 'xfe-level-line', style: { marginTop: '12px' } }, h('span', null, `${data.name} · Lv.${level}`), h('span', { className: 'xfe-level-badge' }, '🐳 小肥鱼')),
+          h(Progress, { value: data.xp % 120, max: 120 }),
+          h('div', { className: 'xfe-side-mini-stats' },
+            h('div', { className: 'xfe-side-mini' }, h('b', null, `${data.stats.totalCorrect}`), h('small', null, '累计答对')),
+            h('div', { className: 'xfe-side-mini' }, h('b', null, `${pct(data.stats.totalCorrect, data.stats.totalQuestions)}%`), h('small', null, t('report.accuracy'))),
+          ),
+          h('div', { className: 'xfe-side-row', style: { marginTop: '7px' } },
+            h('i', { className: 'xfe-dot', style: { '--c': 'var(--xfe-lilac)' } }),
+            h('span', null, `🐚 ${t('pet.shells')}`),
+            h('b', null, `${data.stats.shells || 0}`),
           ),
         ),
         h(
