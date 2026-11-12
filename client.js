@@ -8,7 +8,7 @@ window.__ModuleLoader__.load({
     const NS = 'xiaofeiyu-academy';
     const STORAGE_KEY = 'xiaofeiyu-academy:v1';
     const ART = '/xiaofeiyu-academy/assets/';
-    const APP_VERSION = '1.2.3';
+    const APP_VERSION = '1.2.4';
     const UPDATE_API = '/xiaofeiyu-academy/update';
     const UPDATE_PAGE = 'https://github.com/MagicSandBag/xiaofeiyu-academy/releases/latest';
 
@@ -164,7 +164,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': '下载新版本',
       'settings.updateHint': '下载后在 DSH 插件管理器里覆盖安装；学习数据会保留。',
       'settings.updateFailed': '暂时检查不到更新，稍后再试。',
-      'settings.aboutText': '小肥鱼学习平台 1.2.3 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
+      'settings.aboutText': '小肥鱼学习平台 1.2.4 · 本地保存进度 · 默认不联网；拍照/读目录需主动点击，调用当前模型一次。',
       'settings.credit': '形象来自本机 dsh-pet 的小肥鱼 IP，仅供个人学习使用。',
       'toast.saved': '设置保存啦',
       'toast.reset': '学习进度已重置',
@@ -460,7 +460,7 @@ window.__ModuleLoader__.load({
       'settings.downloadUpdate': 'Download update',
       'settings.updateHint': 'Install it over the old bundle in DSH; learning data is kept.',
       'settings.updateFailed': 'Could not check for updates. Try again later.',
-      'settings.aboutText': 'Xiaofeiyu Academy 1.2.3 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
+      'settings.aboutText': 'Xiaofeiyu Academy 1.2.4 · progress stays local · no network by default; photo/TOC reading calls the current model only when you tap it.',
       'settings.credit': 'Mascot art comes from the local dsh-pet Xiaofeiyu IP, for personal study use.',
       'toast.saved': 'Settings saved',
       'toast.reset': 'Progress reset',
@@ -710,7 +710,7 @@ window.__ModuleLoader__.load({
     }
 
     const CHILD_AVATARS = ['🐳', '🐣', '🦊', '🐼', '🐸', '🐰', '🦄', '🐙'];
-    const HUNGER_DECAY_PER_HOUR = 3;
+    const HUNGER_DECAY_MINUTES_PER_POINT = 16;
     const LEARNING_KEYS = [
       'name', 'grade', 'xp', 'coins', 'hunger', 'hungerAt', 'lastFed',
       'streak', 'bestStreak', 'lastStudyDate', 'lastSubject',
@@ -888,7 +888,7 @@ window.__ModuleLoader__.load({
     function loadState() {
       try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
-        return applyHungerDecay(normalizeState(raw ? JSON.parse(raw) : null));
+        return previewHungerOverride(applyHungerDecay(normalizeState(raw ? JSON.parse(raw) : null)));
       } catch {
         return defaultState();
       }
@@ -1362,9 +1362,9 @@ window.__ModuleLoader__.load({
     function hungerDecayPoints(state, now = Date.now()) {
       const at = Number(state && state.hungerAt) || 0;
       if (!at || !state || state.hunger <= 0) return 0;
-      const hours = (now - at) / 3600000;
-      if (hours < 0.2) return 0;
-      return Math.min(state.hunger, Math.floor(hours * HUNGER_DECAY_PER_HOUR));
+      const minutes = (now - at) / 60000;
+      if (minutes < 1) return 0;
+      return Math.min(state.hunger, Math.floor(minutes / HUNGER_DECAY_MINUTES_PER_POINT));
     }
 
     function applyHungerDecay(state, now = Date.now()) {
@@ -1373,9 +1373,9 @@ window.__ModuleLoader__.load({
       if (!points) return state;
       const before = state.hunger;
       state.hunger = clamp(state.hunger - points, 0, 100);
-      state.hungerAt = points >= HUNGER_DECAY_PER_HOUR ? at + (points / HUNGER_DECAY_PER_HOUR) * 3600000 : now;
+      state.hungerAt = at + points * HUNGER_DECAY_MINUTES_PER_POINT * 60000;
       if (before >= 30 && state.hunger < 30) {
-        addDiary(state, '🍽️', '咕噜咕噜…小肥鱼的肚子有点饿了，记得用贝壳换点好吃的。');
+        addDiary(state, '🍽️', '咕噜咕噜…小肥鱼饿晕啦，趴在海底等你喂一口。');
       }
       if (state.hunger === 0) {
         addDiary(state, '😵', '小肥鱼饿得吐不出泡泡啦，喂点好吃的马上满血复活。');
@@ -1383,9 +1383,22 @@ window.__ModuleLoader__.load({
       return state;
     }
 
-    function hoursUntilHungry(state) {
-      if (!state || state.hunger <= 30) return 0;
-      return (state.hunger - 30) / HUNGER_DECAY_PER_HOUR;
+    function hungerMood(hunger) {
+      if (hunger >= 80) return 'full';
+      if (hunger >= 30) return 'hungry';
+      return 'faint';
+    }
+
+    function previewHungerOverride(state) {
+      try {
+        const raw = new URLSearchParams(window.location.search).get('xfe-hunger');
+        if (raw === null) return state;
+        state.hunger = clamp(Math.round(Number(raw) || 0), 0, 100);
+        state.hungerAt = Date.now();
+        return state;
+      } catch {
+        return state;
+      }
     }
 
     function touchStreak(state) {
@@ -2708,6 +2721,18 @@ window.__ModuleLoader__.load({
         animation: xfe-float 5.2s ease-in-out infinite;
       }
       .xfe-mascot-img { position: relative; z-index: 2; width: 94%; height: 94%; object-fit: contain;  filter: drop-shadow(0 12px 10px rgba(31,42,91,.2)); animation: xfe-bob 4.4s ease-in-out infinite; }
+      .xfe-mascot-img.is-hungry { animation: xfe-bob 4.4s ease-in-out infinite, xfe-pet-nudge 3.2s ease-in-out infinite; }
+      .xfe-mascot-img.is-faint {
+        animation: none; transform: rotate(76deg) translateY(16%) scale(.94);
+        filter: drop-shadow(0 4px 6px rgba(31,42,91,.24)) saturate(.7) brightness(.95);
+      }
+      @keyframes xfe-pet-nudge {
+        0%, 100% { margin-top: 0; }
+        12%, 22% { margin-top: -5px; }
+        30% { margin-top: 0; }
+        46%, 56% { margin-top: -3px; }
+        64% { margin-top: 0; }
+      }
       .xfe-mascot-fallback { position: relative; z-index: 2; width: 86%; height: 86%; animation: xfe-bob 4.4s ease-in-out infinite; }
       .xfe-accessory { position: absolute; z-index: 5; transform: translate(-50%, -50%); font-size: clamp(24px, 4vw, 43px); filter: drop-shadow(0 3px 0 rgba(31,42,91,.2)); pointer-events: none; }
       .xfe-mascot-spark { position: absolute; z-index: 4; font-size: 18px; animation: xfe-wiggle 2.5s ease-in-out infinite; }
@@ -3423,18 +3448,20 @@ window.__ModuleLoader__.load({
     }
 
     function Mascot({ outfit = '', mood = 'cute', className = '', small = false }) {
-      const source = `${ART}cute-t.png`;
+      const imageByMood = { full: 'happy-t', happy: 'happy-t', panic: 'panic-t', faint: 'panic-t' };
+      const source = `${ART}${imageByMood[mood] || 'cute-t'}.png`;
       const [ok, setOk] = useState(true);
       useEffect(() => setOk(true), [source]);
       const worn = OUTFITS.find((o) => o.id === outfit);
-      const moodEmoji = mood === 'happy' ? '🎉' : mood === 'panic' ? '💦' : '';
+      const moodEmoji = mood === 'happy' ? '🎉' : mood === 'panic' ? '💦' : mood === 'hungry' ? '🍚' : mood === 'faint' ? '💫' : '';
+      const poseClass = mood === 'faint' ? ' is-faint' : mood === 'hungry' ? ' is-hungry' : '';
       return h(
         'div',
         { className: `xfe-mascot ${className}` },
         h('div', { className: 'xfe-mascot-blob' }),
         ok
           ? h('img', {
-              className: 'xfe-mascot-img',
+              className: `xfe-mascot-img${poseClass}`,
               src: source,
               alt: '小肥鱼',
               draggable: false,
@@ -4571,8 +4598,8 @@ window.__ModuleLoader__.load({
       const weakest = weakestSubject(data);
       const latest = data.diary && data.diary[0];
       const latestText = latest && latest.text ? (latest.text.length > 42 ? `${latest.text.slice(0, 42)}…` : latest.text) : '';
-      const speech = latestText ? latestText : data.hunger < 35 ? t('home.fish.hungry') : data.streak >= 3 ? `连续 ${data.streak} 天啦！小肥鱼的鳍都在发光。` : data.mistakes.length ? `错题礁还有 ${data.mistakes.length} 颗贝壳，要一起捡吗？` : t('home.hero.side');
-      const mood = data.hunger < 25 ? 'panic' : data.settings.sound && data.streak > 0 ? 'happy' : 'cute';
+      const speech = latestText ? latestText : data.hunger < 30 ? '饿晕在海底啦…快用贝壳换点吃的救救小肥鱼！' : data.hunger < 80 ? '有点想吃大米饭了，喂一口吧。' : data.streak >= 3 ? `连续 ${data.streak} 天啦！小肥鱼的鳍都在发光。` : data.mistakes.length ? `错题礁还有 ${data.mistakes.length} 颗贝壳，要一起捡吗？` : t('home.hero.side');
+      const mood = hungerMood(data.hunger);
       return h(
         'aside',
         { className: 'xfe-side' },
@@ -4599,8 +4626,8 @@ window.__ModuleLoader__.load({
               data.hunger <= 0
                 ? '饿扁了！快喂一口，马上复活。'
                 : data.hunger < 30
-                  ? '肚子在咕噜咕噜叫，投喂一口吧。'
-                  : `约 ${Math.max(1, Math.ceil(hoursUntilHungry(data)))} 小时后会饿，吃饱（80%以上）闯关多拿贝壳。`,
+                  ? '饿晕在海底啦，投喂一口就蹦起来。'
+                  : `饱食度每 ${HUNGER_DECAY_MINUTES_PER_POINT} 分钟扣 1 点 · 吃饱（80%以上）闯关多拿贝壳`,
             ),
             h('button', { type: 'button', className: 'xfe-btn is-sun is-sm is-full', style: { marginTop: '8px' }, onClick: onFeed }, '🍭 ', t('home.fish.feed')),
           ),
@@ -4674,7 +4701,7 @@ window.__ModuleLoader__.load({
             'div',
             { className: 'xfe-hero-mascot' },
             h('div', { className: 'xfe-speech' }, speech),
-            h(Mascot, { outfit: data.outfit, mood: data.hunger < 30 ? 'panic' : 'cute' }),
+            h(Mascot, { outfit: data.outfit, mood: hungerMood(data.hunger) }),
           ),
         ),
         h(
@@ -5829,7 +5856,7 @@ window.__ModuleLoader__.load({
     function GrowthView({ t, data, level, onFeed, onOutfit }) {
       const xpInLevel = data.xp % 120;
       const unlocked = ACHIEVEMENTS.filter((a) => a.test(data)).length;
-      const mood = data.hunger < 25 ? 'panic' : data.hunger > 80 ? 'happy' : 'cute';
+      const mood = hungerMood(data.hunger);
       return h(
         'div',
         null,
@@ -5849,7 +5876,7 @@ window.__ModuleLoader__.load({
             { className: 'xfe-pet-card xfe-card' },
             h(Mascot, { outfit: data.outfit, mood }),
             h('h3', null, data.name),
-            h('p', null, data.hunger > 80 ? '肚皮圆滚滚，开心到吐泡泡。' : data.hunger < 30 ? '肚子有点扁，投喂一口吧。' : '正在认真长大的一只蓝色大肥鱼。'),
+            h('p', null, data.hunger > 80 ? '肚皮圆滚滚，开心到吐泡泡。' : data.hunger < 30 ? '饿晕啦，趴在海底呼呼大睡，喂一口马上蹦起来！' : '有点想吃大米饭了，投喂一口吧。'),
             h('div', { style: { marginTop: '8px', textAlign: 'left' } },
               h('div', { className: 'xfe-level-line' }, h('span', null, '🍙 饱饱度'), h('span', null, `${data.hunger}%`)),
               h(Progress, { value: data.hunger, max: 100, className: 'is-hunger' }),
@@ -5858,7 +5885,7 @@ window.__ModuleLoader__.load({
                   ? '吃得饱饱的，先去学习消耗一下吧。'
                   : data.hunger <= 0
                     ? '饿扁了！喂一口马上复活。'
-                    : `每小时会饿 ${HUNGER_DECAY_PER_HOUR} 点 · 约 ${Math.max(1, Math.ceil(hoursUntilHungry(data)))} 小时后饿肚子`,
+                    : `饱食度每 ${HUNGER_DECAY_MINUTES_PER_POINT} 分钟扣 1 点`,
               ),
             ),
             h('div', { className: 'xfe-pet-stats' },
